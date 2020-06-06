@@ -1,11 +1,14 @@
 {
   "name": "chat-app",
   "version": "1.0.0",
-  "description": "Chat application",
+  "description": "A chat application built with MERN and Socket.io",
   "main": "server.js",
   "scripts": {
+    "client-install":"npm install --prefix client",
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "client":"npm start --prefix client",
+    "dev":"concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,7 @@
   "dependencies": {
     "concurrently": "^5.2.0",
     "cors": "^2.8.5",
+    "create-react-app": "^3.4.1",
     "express": "^4.17.1",
     "mongoose": "^5.9.18",
     "socket.io": "^2.3.0"
