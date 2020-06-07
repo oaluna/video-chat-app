@@ -9,8 +9,14 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//Importing Routes
+const users=require('./routes/Users.js')
+
 //App Routes
-// app.get("/")
+app.get("/",(req,res)=>{
+    res.send("Welcome to Chat Application")
+})
+app.use('/api/users',users)
 
 //DB Configuration
 const db = keyFiles.mongoURI;
