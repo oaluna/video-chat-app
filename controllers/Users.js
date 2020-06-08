@@ -38,24 +38,19 @@ const addNewUser = (req, res) => {
 
 const deleteUser = (req, res) => {
   User.findById(req.params.id).then((user) => {
-    user.remove()
+    user
+      .remove()
       .then(() => res.json({ success: true }))
       .catch((err) => res.status(404).json({ success: false }));
   });
 };
 
 const updateUser = (req, res) => {
-  User.find({ _id: req.params.id }).then((user) => {
-    console.log(req.body)
-    // user.name.firstname = req.body.firstname;
-    // user.name.lastname = req.body.lastname;
-    // user.email = req.body.email;
-    // user.password = req.body.password;
-    // user.username = req.body.username;
-    // user.dark_theme = req.body.dark_theme;
-    // user.save()
-  })
-  .then(() => res.json({ success: true }));
+  let { body } = req;
+  console.log(body);
+  User.findOneAndUpdate({ _id: req.params.id }, body).then(() =>
+    res.json({ success: true })
+  );
 };
 
 const getOneUser = (req, res) => {
