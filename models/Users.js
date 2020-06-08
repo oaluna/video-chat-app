@@ -34,6 +34,10 @@ const UsersSchema = new Schema({
         type:Boolean,
         default:false
     },
+    is_admin:{
+        type:Boolean,
+        default:false
+    }
 },
 {timestamps: true} );
 
