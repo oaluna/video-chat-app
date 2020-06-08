@@ -1,9 +1,9 @@
 const express = require("express");
-const router=express.Router();
+const router = express.Router();
 
-//Importing Model
-const User=require('../models/Users.js')
+const { getAllUsers } = require("../controllers/Users.js");
 
-// router.get('/',)
+//Defined Routes
+router.get("/", getAllUsers);
 
-module.exports=router;
+module.exports = router;
