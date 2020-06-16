@@ -14,7 +14,7 @@ const users = require("./routes/Users.js");
 
 //App Routes
 app.get("/", (req, res) => {
-    res.send("Welcome to Chat Application");
+  res.send("Welcome to Chat Application");
 });
 
 app.use("/api/users", users);
@@ -24,13 +24,23 @@ const db = keyFiles.mongoURI;
 
 //Connecting To DB
 mongoose
-    .connect(db, {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(() => console.log("Connected to DB"))
-    .catch((error) => console.log(error));
+  .connect(db, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  })
+  .then((res) => {
+    console.log("connected to DB");
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+mongoose.connection.on("error", (err) => {
+  console.log(err.message);
+});
+mongoose.connection.on("disconnected", (err) => {
+  console.log("DB disconnected");
+});
 
 // Port Configuration
 const port = process.env.PORT || 8080;
