@@ -1,34 +1,43 @@
-import React,{useState,useEffect} from 'react'
-import io from "socket.io-client"
-import queryString from "query-string"
+import React, { useState, useEffect } from "react";
+import queryString from "query-string";
 
-import {ENDPOINT} from "../../config/config.js"
+import { getData } from "../../axios/apiCalls.js";
+import { urls } from "../../config/urls.js";
 
-let socket;
+const Chat = (props) => {
+  const [id, setUserid] = useState(null);
+  const [rooms, setRooms] = useState([1, 2]);
 
-const Chat=({location})=>{
-    const [username,setUsername]=useState('')
-    const [roomid,setRoomId]=useState(null)
+  const getRoomsList = async (id) => {
+    const roomslist = await getData(urls.rooms.getUserRooms, { id: id });
+    if (roomslist) {
+      setRooms(roomslist);
+    }
+  };
 
-    useEffect(() => {
-        const query=queryString.parse(location.search)
+  const openChats = (e, roomid) => {
+    e.preventDefault();
+    props.history.push(`/chat${props.location.search}&room=${roomid}`);
+  };
 
-        socket=io(ENDPOINT)
+  useEffect(() => {
+    const query = queryString.parse(props.location.search);
 
-        const {name,room}=query
-        setUsername(name);
-        setRoomId(room);
+    setUserid(query.id);
 
-        socket.emit('joining',{name:username,room:roomid},({error})=>{
-            alert(error)
-        })
+    // getRoomsList()
+  }, [id, props.location.search]);
+  return (
+    <div>
+      {rooms.map((room) => {
+        return (
+          <div key={room} onClick={(e) => openChats(e, room)}>
+            {room}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
-    },[ENDPOINT,location.search,username,roomid])
-    return (
-        <div>
-            hELLO
-        </div>
-    )
-}
-
-export default Chat
+export default Chat;
