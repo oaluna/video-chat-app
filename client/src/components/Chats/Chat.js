@@ -6,12 +6,12 @@ import { urls } from "../../config/urls.js";
 
 const Chat = (props) => {
   const [id, setUserid] = useState(null);
-  const [rooms, setRooms] = useState([1, 2]);
+  const [rooms, setRooms] = useState([]);
 
   const getRoomsList = async (id) => {
-    const roomslist = await getData(urls.rooms.getUserRooms, { id: id });
-    if (roomslist) {
-      setRooms(roomslist);
+    const roomslist = await getData(urls.rooms.getUserRooms, { id });
+    if (roomslist.status===200) {
+      setRooms(roomslist.data);
     }
   };
 
@@ -25,14 +25,14 @@ const Chat = (props) => {
 
     setUserid(query.id);
 
-    // getRoomsList()
-  }, [id, props.location.search]);
+    getRoomsList()
+  }, [id,props.location.search]);
   return (
     <div>
       {rooms.map((room) => {
         return (
-          <div key={room} onClick={(e) => openChats(e, room)}>
-            {room}
+          <div key={room._id} onClick={(e) => openChats(e, room._id)}>
+            {room.name}
           </div>
         );
       })}

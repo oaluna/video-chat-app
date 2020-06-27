@@ -16,7 +16,7 @@ app.use(express.static(__dirname + "/public"));
 //Importing Routes
 const users = require("./routes/Users.js");
 const messages = require("./routes/Messages.js");
-// const groups = require("")
+const groups = require("./routes/Groups.js")
 
 //App Routes
 app.get("/", (req, res) => {
@@ -24,8 +24,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", users);
-app.use("/api/chats", messages);
-// app.use("/api/rooms",messages)
+app.use("/api/messages", messages);
+app.use("/api/groups",groups)
 
 //DB Configuration
 const db = keyFiles.mongoURI;
@@ -61,7 +61,6 @@ server.listen(port, () => {
 
 io.on("connection", (socket) => {
   console.log("connection established");
-
   socket.on("joining", ({ name, room }, callback) => {
     console.log(name, room);
     socket.join()

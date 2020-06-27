@@ -3,14 +3,22 @@ const Schema = mongoose.Schema;
 
 const GroupsSchema = new Schema(
   {
-    members: {
-      type: Array,
-      default: [],
+    name: {
+      type: String,
+      required: true,
     },
-    admins: {
-      type: Array,
-      default: [],
-    },
+    members: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "users",
+      },
+    ],
+    admins: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "users",
+      },
+    ],
   },
   { timestamps: true }
 );
