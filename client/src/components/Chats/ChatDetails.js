@@ -28,9 +28,11 @@ const ChatDetails = (props) => {
     },
   };
 
+  //State
   const [userData, setUserData] = useState([]);
   const [room, setRoom] = useState(null);
   const [messageInput, setMessageInput] = useState(initalMessageInput);
+  const [messages, setMessages] = useState([]);
 
   const getUserDetails = async (id) => {
     const userData = await getData(`${urls.users.getOneuser}/${id}`);
@@ -41,11 +43,23 @@ const ChatDetails = (props) => {
 
   const messageSent = (e) => {
     e.preventDefault();
-    let message = {
-      user: userData,
-      room: room,
+    let username = "";
+    if (userData.name.lastname) {
+      username = `${userData.name.firstname} ${userData.name.lastname}`;
+    } else {
+      username = `${userData.name.firstname}`;
+    }
+
+    let data = {
+      sender: userData._id,
+      group: room,
       message: messageInput.message.value,
+      sendername: username,
+      date: new Date()
     };
+    socket.emit("sendMessage", data, () => {
+      setMessageInput(initalMessageInput);
+    });
   };
 
   const checkValidation = (value, rules) => {
@@ -70,7 +84,6 @@ const ChatDetails = (props) => {
       updatedMessageInput[id].value,
       updatedMessageInput[id].validation
     );
-
     setMessageInput(updatedMessageInput);
   };
 
@@ -81,28 +94,26 @@ const ChatDetails = (props) => {
 
     getUserDetails(query.id);
 
-    // socket.emit("joining", { name: name, room: room }),
-    //   () => {
-    //     console.log(name, room);
-    //   };
+    socket.emit("joining", { name: userData, room: room }, () => {
+      console.log(userData, room);
+    });
 
-    // return () => {
-    //   socket.emit("disconnected");
+    socket.on("message", (data) => {
+      let allMessages = [...messages, data];
+      setMessages(allMessages);
+    });
 
-    //   socket.off();
-    // };
+    return () => {
+      socket.emit("disconnected");
 
-    // console.log(userData,room)
-  }, [props.location.search]);
-
-  // console.log(messageInput).message
-
-  // console.log(Object.keys(messageInput)[0])
+      socket.off();
+    };
+  }, [props.location.search, messages]);
 
   return (
     <div>
       <div>
-        <MessageBox />
+        <MessageBox messages={messages}/>
       </div>
       <div>
         <form onSubmit={(e) => messageSent(e)}>

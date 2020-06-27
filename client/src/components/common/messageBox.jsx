@@ -1,12 +1,18 @@
-import React from 'react'
+import React from "react";
 
-const MessageBox=(props)=>{
+const MessageBox = (props) => {
+    if(props.messages.length>0){
+        return props.messages.map((message) => {
     return (
-        <div key={props.id}>
-            <h5>{props.user}</h5>
-            <p>{props.message}</p>
-        </div>
-    )
+      <div key={message.date}>
+        <h5>{message.username}</h5>
+        <p>{message.message}</p>
+      </div>
+    );
+  });
+}else{
+    return null
 }
+};
 
-export default MessageBox
+export default MessageBox;

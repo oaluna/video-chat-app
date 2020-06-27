@@ -62,11 +62,18 @@ server.listen(port, () => {
 io.on("connection", (socket) => {
   console.log("connection established");
   socket.on("joining", ({ name, room }, callback) => {
-    console.log(name, room);
-    socket.join()
+    // socket.emit('message',{user:'admin',text:'Welcome to room'})
+    // socket.broadcast.to(room).emit('message',{user:'admin',text:'New user joined'})
+    // socket.join(room)
   });
 
   socket.on("disconnect", () => {
     console.log("connection disconnected");
   });
+
+  socket.on('sendMessage',(data,callback)=>{
+    io.emit('message',data)
+    callback();
+
+  })
 });

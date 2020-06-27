@@ -8,6 +8,10 @@ const GroupMessageSchema = new Schema(
       type: String,
       required: true,
     },
+    sendername:{
+      type:String,
+      required:true
+    },
     group: { type: Schema.Types.ObjectId, ref: "groups", required: true },
   },
   { timestamps: true }
