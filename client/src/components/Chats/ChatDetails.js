@@ -37,7 +37,7 @@ const ChatDetails = (props) => {
   const getUserDetails = async (id) => {
     const userData = await getData(`${urls.users.getOneuser}/${id}`);
     if (userData.status === 200) {
-      setUserData(userData.data);
+      return await userData.data
     }
   };
 
@@ -91,18 +91,19 @@ const ChatDetails = (props) => {
     const query = queryString.parse(props.location.search);
     socket = io(ENDPOINT);
     setRoom(query.room);
-
     if (userData === null) {
-      getUserDetails(query.id);
-    }
-
-    if (userData !== null && room) {
-      socket.emit("joining", { name: userData, room: room }, (err) => {
+      getUserDetails(query.id).then((data)=>{
+        setUserData(data)
+        return data
+      }).then((result)=>{
+        socket.emit("join", { name: result, room: query.room }, (err) => {
         if (err) {
           alert(err);
         }
       });
+      })
     }
+
   }, [props.location.search, ENDPOINT]);
 
   useEffect(() => {
