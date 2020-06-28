@@ -21,8 +21,8 @@ const getAllUsers = (req, res) => {
 const addNewUser = (req, res) => {
   const newUser = new User({
     name: {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
+      firstname: req.body.name.firstname,
+      lastname: req.body.name.lastname,
     },
     email: req.body.email,
     password: req.body.password,

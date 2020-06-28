@@ -41,7 +41,7 @@ const InputField = (props) => {
   }
 
   return (<div>
-      {/* <label></label> */}
+      <label>{props.elementConfig.name}</label>
       {inputs}
       {/* {validationError} */}
   </div>);
