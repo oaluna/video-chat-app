@@ -1,4 +1,5 @@
 const Group = require("../models/Groups.js");
+const User=require("../models/Users.js")
 const mongoose = require("mongoose");
 
 const getAllGroups = (req, res) => {
@@ -17,24 +18,26 @@ const getAllGroups = (req, res) => {
     });
 };
 
-const addNewGroup = (req, res) => {
+const addNewGroup = async(req, res) => {
+const user=await  User.findById(req.body.id)
   const newGroup = new Group({
     name: req.body.name,
-    members: [req.body.id],
-    admins: [req.body.id],
+    members:[user],
+    admins:[user]
   });
-  newGroup.save().then((group) => {
+  newGroup.save()
+  .then((group) => {
     res.json(group);
   });
 };
 
 const getGroupsByUser = (req, res) => {
-  Group.find({ members: req.params.id })
+  Group.find({ members: req.params.id }).populate("users")
     .then((groups) => {
       if (Object.values(groups).length !== 0) {
         res.json(groups);
       } else {
-        res.sendStatus(204);
+        res.json([])
       }
     })
     .catch((err) => {

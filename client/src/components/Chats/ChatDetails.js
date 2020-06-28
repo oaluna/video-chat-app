@@ -29,7 +29,7 @@ const ChatDetails = (props) => {
   };
 
   //State
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState(null);
   const [room, setRoom] = useState(null);
   const [messageInput, setMessageInput] = useState(initalMessageInput);
   const [messages, setMessages] = useState([]);
@@ -55,7 +55,7 @@ const ChatDetails = (props) => {
       group: room,
       message: messageInput.message.value,
       sendername: username,
-      date: new Date()
+      date: new Date(),
     };
     socket.emit("sendMessage", data, () => {
       setMessageInput(initalMessageInput);
@@ -92,28 +92,29 @@ const ChatDetails = (props) => {
     socket = io(ENDPOINT);
     setRoom(query.room);
 
-    getUserDetails(query.id);
+    if (userData === null) {
+      getUserDetails(query.id);
+    }
 
-    socket.emit("joining", { name: userData, room: room }, () => {
-      console.log(userData, room);
-    });
+    if (userData !== null && room) {
+      socket.emit("joining", { name: userData, room: room }, (err) => {
+        if (err) {
+          alert(err);
+        }
+      });
+    }
+  }, [props.location.search, ENDPOINT]);
 
+  useEffect(() => {
     socket.on("message", (data) => {
-      let allMessages = [...messages, data];
-      setMessages(allMessages);
+      setMessages((messages) => [...messages, data]);
     });
-
-    return () => {
-      socket.emit("disconnected");
-
-      socket.off();
-    };
-  }, [props.location.search, messages]);
+  }, []);
 
   return (
     <div>
       <div>
-        <MessageBox messages={messages}/>
+        <MessageBox messages={messages} />
       </div>
       <div>
         <form onSubmit={(e) => messageSent(e)}>

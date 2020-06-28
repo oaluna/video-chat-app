@@ -61,7 +61,9 @@ server.listen(port, () => {
 
 io.on("connection", (socket) => {
   console.log("connection established");
-  socket.on("joining", ({ name, room }, callback) => {
+  socket.on("joining", ({ name, room }) => {
+    console.log(socket.id)
+    console.log(name,room)
     // socket.emit('message',{user:'admin',text:'Welcome to room'})
     // socket.broadcast.to(room).emit('message',{user:'admin',text:'New user joined'})
     // socket.join(room)
