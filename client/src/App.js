@@ -5,7 +5,6 @@ import Chat from "./components/Chats/Chat"
 import Login from "./components/login/Login"
 import ChatDetails from "./components/Chats/ChatDetails"
 
-
 function App() {
   return (
     <div>

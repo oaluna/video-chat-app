@@ -39,7 +39,7 @@ const getAllGroupMessages=(req,res)=>{
 const getMessagesByGroup = async (req, res) => {
   const groupId=req.params.id
   GroupMessages.find({group:groupId})
-  .sort({ date: -1 }).limit(2)
+  .sort({ date: -1 }).limit(50)
   .then((messages) => {
     if (Object.values(messages).length !== 0) {
       res.json(messages);

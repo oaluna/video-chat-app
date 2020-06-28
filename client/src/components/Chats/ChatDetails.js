@@ -31,8 +31,8 @@ const ChatDetails = (props) => {
   //State
   const [userData, setUserData] = useState(null);
   const [room, setRoom] = useState(null);
-  const [messageInput, setMessageInput] = useState(initalMessageInput);
   const [messages, setMessages] = useState([]);
+  const [messageInput, setMessageInput] = useState(initalMessageInput);
 
   const getUserDetails = async (id) => {
     const userData = await getData(`${urls.users.getOneuser}/${id}`);
@@ -42,11 +42,9 @@ const ChatDetails = (props) => {
   };
 
   const getOldMessages = async (id) => {
-    const oldMessages = await getData(
-      `${urls.messages.messagesByGroup}/${id}`
-    );
+    const oldMessages = await getData(`${urls.messages.messagesByGroup}/${id}`);
     if (oldMessages.status === 200) {
-      let oldMessagesArray=[]
+      let oldMessagesArray = [];
       for (let message of oldMessages.data) {
         let data = {
           date: message.createdAt,
@@ -55,13 +53,11 @@ const ChatDetails = (props) => {
           sender: message.sender,
           sendername: message.sendername,
         };
-        oldMessagesArray.push(data)
+        oldMessagesArray.push(data);
       }
       return await oldMessagesArray;
     }
-    setMessages(oldMessages);
   };
-
 
   const messageSent = (e) => {
     e.preventDefault();
@@ -114,31 +110,29 @@ const ChatDetails = (props) => {
     socket = io(ENDPOINT);
     setRoom(query.room);
 
-    if (messages.length === 0) {
-      getOldMessages(query.room);
-    }
+    if (userData === null || messages.length === 0) {
 
-    if (userData === null) {
-      getUserDetails(query.id)
-        .then((data) => {
-          setUserData(data);
-          return data;
-        })
-        .then((result) => {
-          socket.emit("join", { name: result, room: query.room }, (err) => {
-            if (err) {
-              alert(err);
-            }
-          });
-        });
-    }
-  }, []);
+      getOldMessages(query.room).then((data)=>{ setMessages(data)});
+      getUserDetails(query.id).then((data) => {setUserData(data)});
+    };
+
+  },[]);
+
+  useEffect(()=>{
+    if(userData && room){
+    socket.emit("join", { name: userData, room: room }, (err) => {
+      if (err) {
+        alert(err);
+      }
+    });
+  }
+  },[userData,room])
 
   useEffect(() => {
     socket.on("message", (data) => {
       setMessages((messages) => [...messages, data]);
     });
-  }, []);
+  },[]);
 
   return (
     <div>
