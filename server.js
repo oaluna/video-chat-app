@@ -3,8 +3,9 @@ const cors = require("cors");
 const path = require("path");
 const keyFiles = require("./config/keys.js");
 const mongoose = require("mongoose");
-const socketIo = require("socket.io");
 const http = require("http");
+const socketIo = require("socket.io");
+const { SocketMessaging } = require("./socket/socket.js");
 
 const app = express();
 const server = http.createServer(app);
@@ -17,6 +18,7 @@ app.use(express.static(__dirname + "/public"));
 const users = require("./routes/Users.js");
 const messages = require("./routes/Messages.js");
 const groups = require("./routes/Groups.js");
+const groupmessages = require("./routes/GroupMessages.js");
 
 //App Routes
 app.get("/", (req, res) => {
@@ -26,6 +28,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", users);
 app.use("/api/messages", messages);
 app.use("/api/groups", groups);
+app.use("/api/groupmessages", groupmessages);
 
 //DB Configuration
 const db = keyFiles.mongoURI;
@@ -50,58 +53,12 @@ mongoose.connection.on("disconnected", (err) => {
   console.log("DB disconnected");
 });
 
-//Socket Configuration
-const io = socketIo(server);
-
 // Port Configuration
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
   console.log(`Server running at ${port}`);
 });
 
-io.on("connection", (socket) => {
-  let roomID=null;
-  let username = "";
-  console.log("connection established");
-  socket.on("join", ({ name, room }, callback) => {
-    roomID=room
-    socket.join(room);
-    name.name.lastname
-      ? (username = `${name.name.firstname} ${name.name.lastname}`)
-      : (username = name.name.firstname);
-
-    socket.emit("message", {
-      sendername: "ChatBot",
-      message: `Welcome ${username} to the group`,
-      date: new Date(),
-      group: room,
-      sender: 0,
-    });
-    socket.broadcast.to(room).emit("message", {
-      sendername: "ChatBot",
-      message: `${username} joined`,
-      date: new Date(),
-      group: room,
-      sender: 0,
-    });
-    callback();
-  });
-
-  socket.on("sendMessage", (data, callback) => {
-    io.to(data.group).emit("message", data);
-    callback();
-  });
-
-  socket.on("disconnect", () => {
-    console.log("connection disconnected");
-
-    io.to(roomID).emit("message", {
-      sendername: "ChatBot",
-      message: `${username} left`,
-      date: new Date(),
-      group: roomID,
-      sender: 0,
-    });
-
-  });
-});
+//Socket configuration
+const io = socketIo(server);
+SocketMessaging(io);

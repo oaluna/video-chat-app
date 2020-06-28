@@ -37,9 +37,31 @@ const ChatDetails = (props) => {
   const getUserDetails = async (id) => {
     const userData = await getData(`${urls.users.getOneuser}/${id}`);
     if (userData.status === 200) {
-      return await userData.data
+      return await userData.data;
     }
   };
+
+  const getOldMessages = async (id) => {
+    const oldMessages = await getData(
+      `${urls.messages.messagesByGroup}/${id}`
+    );
+    if (oldMessages.status === 200) {
+      let oldMessagesArray=[]
+      for (let message of oldMessages.data) {
+        let data = {
+          date: message.createdAt,
+          group: message.group,
+          message: message.message,
+          sender: message.sender,
+          sendername: message.sendername,
+        };
+        oldMessagesArray.push(data)
+      }
+      return await oldMessagesArray;
+    }
+    setMessages(oldMessages);
+  };
+
 
   const messageSent = (e) => {
     e.preventDefault();
@@ -91,20 +113,26 @@ const ChatDetails = (props) => {
     const query = queryString.parse(props.location.search);
     socket = io(ENDPOINT);
     setRoom(query.room);
-    if (userData === null) {
-      getUserDetails(query.id).then((data)=>{
-        setUserData(data)
-        return data
-      }).then((result)=>{
-        socket.emit("join", { name: result, room: query.room }, (err) => {
-        if (err) {
-          alert(err);
-        }
-      });
-      })
+
+    if (messages.length === 0) {
+      getOldMessages(query.room);
     }
 
-  }, [props.location.search, ENDPOINT]);
+    if (userData === null) {
+      getUserDetails(query.id)
+        .then((data) => {
+          setUserData(data);
+          return data;
+        })
+        .then((result) => {
+          socket.emit("join", { name: result, room: query.room }, (err) => {
+            if (err) {
+              alert(err);
+            }
+          });
+        });
+    }
+  }, []);
 
   useEffect(() => {
     socket.on("message", (data) => {

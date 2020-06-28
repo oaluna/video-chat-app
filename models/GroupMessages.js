@@ -17,4 +17,4 @@ const GroupMessageSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = Group = mongoose.model("group_messages", GroupMessageSchema);
+module.exports = GroupMessages = mongoose.model("group_messages", GroupMessageSchema);
