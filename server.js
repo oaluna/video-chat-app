@@ -5,6 +5,9 @@ const keyFiles = require("./config/keys.js");
 const mongoose = require("mongoose");
 const http = require("http");
 const socketIo = require("socket.io");
+const morgan = require('morgan');
+const winston = require('winston');
+const fs = require('fs');
 const { SocketMessaging } = require("./socket/socket.js");
 
 const app = express();
@@ -13,6 +16,11 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
+
+//  Morgan logging
+app.use(morgan('combined', {
+  stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+}));
 
 //Importing Routes
 const users = require("./routes/Users.js");
@@ -62,3 +70,16 @@ server.listen(port, () => {
 //Socket configuration
 const io = socketIo(server);
 SocketMessaging(io);
+
+// Logger configuration
+const logConfiguration = {
+  transports: [
+    new winston.transports.File({
+      filename: './error.log',
+    }),
+  ],
+};
+
+// Create the logger
+const logger = winston.createLogger(logConfiguration);
+module.exports = { logger };

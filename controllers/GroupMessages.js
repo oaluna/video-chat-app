@@ -1,6 +1,7 @@
 const GroupMessages = require("../models/GroupMessages.js");
 const Group = require("../models/Groups.js");
 const User = require("../models/Users.js");
+const { logger } = require("../server.js");
 
 const addNewMessage = async (data) => {
   const sender = await User.findById(data.sender);
@@ -29,6 +30,7 @@ const getAllGroupMessages=(req,res)=>{
       }
     })
     .catch((err) => {
+      logger.error({message:`${err}`})
       console.log({ message: `${err} in getting messages` });
       res.sendStatus(500);
     });
@@ -46,6 +48,7 @@ const getMessagesByGroup = async (req, res) => {
     }
   })
   .catch((err) => {
+    logger.error({message:`${err.stack}`})
     console.log({ message: `${err} in getting messages` });
     res.sendStatus(500);
   });

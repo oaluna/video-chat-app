@@ -23,10 +23,11 @@
   "dependencies": {
     "concurrently": "^5.2.0",
     "cors": "^2.8.5",
-    "create-react-app": "^3.4.1",
     "express": "^4.17.1",
     "mongoose": "^5.9.18",
-    "socket.io": "^2.3.0"
+    "morgan": "^1.10.0",
+    "socket.io": "^2.3.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
