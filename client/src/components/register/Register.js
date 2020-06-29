@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import InputField from "../common/InputField";
-import Button from "../common/button";
+import ButtonUser from "../common/button";
 import { withRouter } from "react-router";
 import { postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
@@ -139,7 +139,7 @@ const Register = (props) => {
       elementConfig: {
         type: "password",
         placeholder: "your password",
-        name: "Password'",
+        name: "Password*",
       },
       value: "",
       validation: {
@@ -153,7 +153,7 @@ const Register = (props) => {
       elementConfig: {
         type: "password",
         placeholder: "confirm your password",
-        name: "Confirm Password'",
+        name: "Confirm Password*",
       },
       value: "",
       validation: {
@@ -179,10 +179,10 @@ const Register = (props) => {
 
   return (
     <div>
-      <div>
-        <h5>Register</h5>
+      <div style={{display:'flex',flexFlow:"column",alignItems:"center"}}>
+        <h2>Register</h2>
         <div>
-          <div>
+          <form autoComplete="off">
             {registerFormArray.map((element) => {
               return (
                 <InputField
@@ -195,15 +195,15 @@ const Register = (props) => {
                 />
               );
             })}
-          </div>
-          <div>
-            <Button
-              text={"Submit"}
+          </form>
+          <div style={{display:'flex',flexFlow:"column",alignItems:"center"}}>
+            <ButtonUser
+              text={"Submit"} color="primary"
               buttonHandler={(e) => buttonHandler(e, "submit")}
               disabled={!formValid}
             />
             <p>OR</p>
-            <Button
+            <ButtonUser
               text={"Login Page"}
               buttonHandler={(e) => buttonHandler(e, "login")}
             />

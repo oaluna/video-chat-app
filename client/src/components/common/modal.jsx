@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from "../common/button.jsx";
+import ButtonUser from "../common/button.jsx";
 
 const Modal=(props)=>{
     return (
@@ -10,7 +10,7 @@ const Modal=(props)=>{
           </button>
           <div>
             <input type="text" onChange={props.modalInputHandler} value={props.value} />
-            <Button
+            <ButtonUser
               buttonHandler={(e) => props.create(e)}
               disabled={props.value === ""}
               text={props.text}

@@ -6,11 +6,11 @@ import { ENDPOINT } from "../../config/config.js";
 import { getData,postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
 
-import SendIcon from "../../assests/send.svg";
+import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import InputField from "../common/InputField.jsx";
 import MessageBox from "../common/messageBox.jsx";
 import Modal from "../common/modal.jsx";
-import Button from "../common/button.jsx";
+import ButtonUser from "../common/button.jsx";
 
 let socket;
 
@@ -20,7 +20,7 @@ const ChatDetails = (props) => {
       elementType: "input",
       elementConfig: {
         type: "text",
-        placeholder: "your message",
+        placeholder: "your message...",
       },
       value: "",
       validation: {
@@ -191,11 +191,11 @@ const ChatDetails = (props) => {
             valueChange={(e) => inputChangeHandler(e, "message")}
           />
           <button type="submit" disabled={!messageInput.message.valid}>
-            <img src={SendIcon} alt="send-icon" />
+          <SendOutlinedIcon/>
           </button>
         </form>
       </div>
-      <Button
+      <ButtonUser
         buttonHandler={(e) => modalToggle(e, true)}
         text="Add new Member"
       />

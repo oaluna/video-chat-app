@@ -1,4 +1,6 @@
 import React from "react";
+import { TextField,Select } from '@material-ui/core';
+
 
 const InputField = (props) => {
   let inputs = null;
@@ -6,7 +8,7 @@ const InputField = (props) => {
   switch (props.elementType) {
     case "input":
       inputs = (
-        <input
+        <TextField id="outlined-basic" label={props.elementConfig.name} variant="outlined"
           {...props.elementConfig}
           value={props.value}
           onChange={props.valueChange}
@@ -16,7 +18,7 @@ const InputField = (props) => {
 
     case "select":
       inputs = (
-        <select
+        <Select
           {...props.elementConfig}
           value={props.value}
           onChange={props.valueChange}
@@ -26,13 +28,14 @@ const InputField = (props) => {
               {option.displayValue}
             </option>
           ))}
-        </select>
+        </Select>
       );
       break;
 
     default:
       inputs = (
-        <input
+        <TextField id="outlined-basic" label={props.elementConfig.name} variant="outlined"
+        autoFocus={true}
           {...props.elementConfig}
           value={props.value}
           onChange={props.valueChange}
@@ -41,7 +44,7 @@ const InputField = (props) => {
   }
 
   return (<div>
-      <label>{props.elementConfig.name}</label>
+      {/* <InputLabel>{props.elementConfig.name}</InputLabel> */}
       {inputs}
       {/* {validationError} */}
   </div>);

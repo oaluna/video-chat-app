@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
 import InputField from "../common/InputField";
-import Button from "../common/button";
+import ButtonUser from "../common/button";
 import { withRouter } from "react-router";
 import { getData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
+import { Container } from "@material-ui/core";
 
 const Login = (props) => {
   const checkValidation = (value, rules) => {
@@ -52,13 +53,13 @@ const Login = (props) => {
     if (value === "register") {
       props.history.push("/register");
     } else if (value === "login") {
-    const formData = {};
-    for (let formelements in loginForm) {
-      formData[formelements] = loginForm[formelements].value;
-    }
-      const result=await getData(urls.login.getAllUsers,formData);
-      if(result.data.auth){
-        props.history.push(`/chats?id=${result.data.userid}`)
+      const formData = {};
+      for (let formelements in loginForm) {
+        formData[formelements] = loginForm[formelements].value;
+      }
+      const result = await getData(urls.login.getAllUsers, formData);
+      if (result.data.auth) {
+        props.history.push(`/chats?id=${result.data.userid}`);
       }
     }
   };
@@ -85,7 +86,7 @@ const Login = (props) => {
       value: "",
       validation: {
         required: true,
-        length:true
+        length: true,
       },
       valid: false,
     },
@@ -104,38 +105,38 @@ const Login = (props) => {
   }
 
   return (
-    <div>
-      <div>
-        <h5>Login</h5>
+    <Container>
+      <div style={{display:'flex',flexFlow:"column",alignItems:"center"}}>
+      <h2>Login</h2>
         <div>
-          <div>
-            {loginFormArray.map((element) => {
-              return (
-                <InputField
-                  key={element.id}
-                  elementConfig={element.config.elementConfig}
-                  value={element.config.value}
-                  invalid={!element.config.valid}
-                  shouldBeChecked={element.config.validation}
-                  valueChange={(e) => inputChangeHandler(e, element.id)}
-                />
-              );
-            })}
-          </div>
-          <div>
-            <Button
-              text={"Login"}
-              buttonHandler={(e) => buttonHandler(e, "login")} disabled={!formValid}
-            />
-            <p>OR</p>
-            <Button
-              text={"Register"}
-              buttonHandler={(e) => buttonHandler(e, "register")}
-            />
-          </div>
+          {loginFormArray.map((element) => {
+            return (
+              <InputField
+                key={element.id}
+                elementConfig={element.config.elementConfig}
+                value={element.config.value}
+                invalid={!element.config.valid}
+                shouldBeChecked={element.config.validation}
+                valueChange={(e) => inputChangeHandler(e, element.id)}
+              />
+            );
+          })}
+        </div>
+        <div style={{display:'flex',flexFlow:"column",alignItems:"center"}}>
+          <ButtonUser
+            text={"Login"}
+            color="primary"
+            buttonHandler={(e) => buttonHandler(e, "login")}
+            disabled={!formValid}
+          />
+          <p>OR</p>
+          <ButtonUser
+            text={"Register"}
+            buttonHandler={(e) => buttonHandler(e, "register")}
+          />
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

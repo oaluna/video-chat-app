@@ -1,9 +1,10 @@
 import React from 'react'
+import Button from '@material-ui/core/Button';
 
-const Button=(props)=>{
+const ButtonUser=(props)=>{
     return (
-    <button onClick={props.buttonHandler} key={props.text} name={props.text} disabled={props.disabled}>{props.text}</button>
+    <Button variant="contained" color={props.color?props.color:"secondary"} onClick={props.buttonHandler} key={props.text} name={props.text} disabled={props.disabled}>{props.text}</Button>
     )
 }
 
-export default Button
+export default ButtonUser

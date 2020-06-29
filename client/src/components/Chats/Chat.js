@@ -3,8 +3,12 @@ import queryString from "query-string";
 
 import { getData, postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
-import Button from "../common/button.jsx";
+import ButtonUser from "../common/button.jsx";
 import Modal from "../common/modal.jsx";
+
+import { List } from '@material-ui/core';
+import { ListItem } from '@material-ui/core';
+import { Divider } from '@material-ui/core';
 
 const Chat = (props) => {
   const [rooms, setRooms] = useState([]);
@@ -52,7 +56,13 @@ const Chat = (props) => {
   let newGroupModal = "";
   if (modal === true) {
     newGroupModal = (
-      <Modal modalToggle={modalToggle} modalInputHandler={modalInputHandler} value={groupname} text="Create Group" create={createGroup}/>
+      <Modal
+        modalToggle={modalToggle}
+        modalInputHandler={modalInputHandler}
+        value={groupname}
+        text="Create Group"
+        create={createGroup}
+      />
     );
   } else {
     newGroupModal = null;
@@ -65,17 +75,19 @@ const Chat = (props) => {
   }, [props.location.search]);
   return (
     <div>
-      {rooms.map((room) => {
-        return (
-          <div key={room._id} onClick={(e) => openChats(e, room._id)}>
-            {room.name}
-          </div>
-        );
-      })}
-      <Button
+      <List>
+        {rooms.map((room) => {
+          return (
+            <ListItem button divider alignItems="center" key={room._id} onClick={(e) => openChats(e, room._id)} style={{cursor:"pointer"}}>
+              {room.name}
+            </ListItem>
+          );
+        })}
+      <ButtonUser
         buttonHandler={(e) => modalToggle(e, true)}
         text="Add new Group"
-      />
+        />
+        </List>
       {newGroupModal}
     </div>
   );
