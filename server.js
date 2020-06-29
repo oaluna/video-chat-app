@@ -8,6 +8,7 @@ const socketIo = require("socket.io");
 const morgan = require("morgan");
 const winston = require("winston");
 const fs = require("fs");
+require("dotenv").config()
 const { SocketMessaging } = require("./socket/socket.js");
 
 const app = express();
