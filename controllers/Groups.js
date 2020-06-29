@@ -30,7 +30,10 @@ const addNewGroup = async (req, res) => {
 };
 
 const addNewUserToGroup = async (req, res) => {
+  const group=await Group.findById(req.body.group)
   const user = await User.find({ username: req.body.username });
+  const result =await group.members.includes(user[0]._id)
+  if(result===false){
   Group.findByIdAndUpdate(
     req.body.group,
     { $push: { members: user } },
@@ -39,6 +42,9 @@ const addNewUserToGroup = async (req, res) => {
       res.json({message:"member added successfully"})
     }
   );
+  }else{
+    res.json({message:"user already a member"})
+  }
 };
 
 const getGroupsByUser = (req, res) => {
