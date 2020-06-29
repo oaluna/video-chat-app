@@ -1,7 +1,7 @@
 import React from "react";
 
 const MessageBox = (props) => {
-    if(props.messages.length>0){
+    if(props.messages){
         return props.messages.map((message) => {
     return (
       <div key={message.date}>

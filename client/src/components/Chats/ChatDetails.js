@@ -43,8 +43,9 @@ const ChatDetails = (props) => {
 
   const getOldMessages = async (id) => {
     const oldMessages = await getData(`${urls.messages.messagesByGroup}/${id}`);
+    let oldMessagesArray = [];
     if (oldMessages.status === 200) {
-      let oldMessagesArray = [];
+      if(oldMessages.data.length!==0){
       for (let message of oldMessages.data) {
         let data = {
           date: message.createdAt,
@@ -55,7 +56,10 @@ const ChatDetails = (props) => {
         };
         oldMessagesArray.push(data);
       }
+    }
       return await oldMessagesArray;
+    }else{
+      return await oldMessagesArray
     }
   };
 
