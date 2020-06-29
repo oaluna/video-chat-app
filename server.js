@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const keyFiles = require("./config/keys.js");
+// const keyFiles = require("./config/keys.js");
 const mongoose = require("mongoose");
 const http = require("http");
 const socketIo = require("socket.io");
-const morgan = require('morgan');
-const winston = require('winston');
-const fs = require('fs');
+const morgan = require("morgan");
+const winston = require("winston");
+const fs = require("fs");
 const { SocketMessaging } = require("./socket/socket.js");
 
 const app = express();
@@ -15,12 +15,15 @@ const server = http.createServer(app);
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(__dirname + "/public"));
 
 //  Morgan logging
-app.use(morgan('combined', {
-  stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
-}));
+app.use(
+  morgan("combined", {
+    stream: fs.createWriteStream(path.join(__dirname, "access.log"), {
+      flags: "a",
+    }),
+  })
+);
 
 //Importing Routes
 const users = require("./routes/Users.js");
@@ -40,7 +43,7 @@ app.use("/api/groupmessages", groupmessages);
 
 //DB Configuration
 // const db = keyFiles.mongoURI;
-const db=process.env.mongoURI
+const db = process.env.mongoURI;
 
 //Connecting To DB
 mongoose
@@ -62,6 +65,15 @@ mongoose.connection.on("disconnected", (err) => {
   console.log("DB disconnected");
 });
 
+//Serving static files for production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+
+  app.get('*',(req,res)=>{
+    res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+  })
+}
+
 // Port Configuration
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
@@ -76,7 +88,7 @@ SocketMessaging(io);
 const logConfiguration = {
   transports: [
     new winston.transports.File({
-      filename: './error.log',
+      filename: "./error.log",
     }),
   ],
 };
