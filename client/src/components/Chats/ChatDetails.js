@@ -115,7 +115,7 @@ const ChatDetails = (props) => {
 
   useEffect(() => {
     const query = queryString.parse(props.location.search);
-    socket = io(ENDPOINT);
+    socket = io(process.env.baseURL ||ENDPOINT);
     setRoom(query.room);
 
     if (userData === null || messages.length === 0) {
