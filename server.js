@@ -32,9 +32,9 @@ const groups = require("./routes/Groups.js");
 const groupmessages = require("./routes/GroupMessages.js");
 
 //App Routes
-app.get("/", (req, res) => {
-  res.send("Welcome to Chat Application");
-});
+// app.get("/", (req, res) => {
+//   res.send("Welcome to Chat Application");
+// });
 
 app.use("/api/users", users);
 app.use("/api/messages", messages);
