@@ -3,12 +3,14 @@ import io from "socket.io-client";
 import queryString from "query-string";
 
 import { ENDPOINT } from "../../config/config.js";
-import { getData } from "../../axios/apiCalls.js";
+import { getData,postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
 
 import SendIcon from "../../assests/send.svg";
 import InputField from "../common/InputField.jsx";
 import MessageBox from "../common/messageBox.jsx";
+import Modal from "../common/modal.jsx";
+import Button from "../common/button.jsx";
 
 let socket;
 
@@ -33,6 +35,8 @@ const ChatDetails = (props) => {
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState(initalMessageInput);
+  const [modal, setmodal] = useState(false);
+  const [username, setUsername] = useState("");
 
   const getUserDetails = async (id) => {
     const userData = await getData(`${urls.users.getOneuser}/${id}`);
@@ -138,6 +142,40 @@ const ChatDetails = (props) => {
     });
   },[]);
 
+  const modalToggle = (e, value) => {
+    if (modal !== value) {
+      setmodal(value);
+    }
+  };
+
+  const AddMember = async (e) => {
+    const query = queryString.parse(props.location.search);
+    e.preventDefault();
+    const data = {
+      group: query.room,
+      username: username,
+    };
+    const result = await postData(urls.rooms.addNewUser, data);
+    if (result.status === 200) {
+      modalToggle(false);
+      setUsername("");
+      alert("Member added successfully");
+    }
+  };
+
+  const modalInputHandler = (e) => {
+    setUsername(e.target.value.trim());
+  };
+
+  let addUserModal = "";
+  if (modal === true) {
+    addUserModal = (
+      <Modal modalToggle={modalToggle} modalInputHandler={modalInputHandler} value={username} text="Add Member" create={AddMember}/>
+    );
+  } else {
+    addUserModal = null;
+  }
+
   return (
     <div>
       <div>
@@ -157,6 +195,11 @@ const ChatDetails = (props) => {
           </button>
         </form>
       </div>
+      <Button
+        buttonHandler={(e) => modalToggle(e, true)}
+        text="Add new Member"
+      />
+      {addUserModal}
     </div>
   );
 };

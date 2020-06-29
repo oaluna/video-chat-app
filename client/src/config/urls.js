@@ -5,6 +5,7 @@ export const urls={
     rooms:{
         getUserRooms:'/api/groups',
         addNewUser:'/api/groups/adduser',
+        addNewRoom:'/api/groups/add'
     },
     users:{
         getOneuser:'/api/users'
