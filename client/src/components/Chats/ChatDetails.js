@@ -182,7 +182,7 @@ const ChatDetails = (props) => {
         <MessageBox messages={messages} />
       </div>
       <div>
-        <form onSubmit={(e) => messageSent(e)}>
+        <form onSubmit={(e) => messageSent(e)} style={{display:"flex"}}>
           <InputField
             key={Object.keys(messageInput)[0]}
             elementConfig={messageInput.message.elementConfig}
