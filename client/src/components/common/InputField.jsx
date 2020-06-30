@@ -8,7 +8,8 @@ const InputField = (props) => {
   switch (props.elementType) {
     case "input":
       inputs = (
-        <TextField id="outlined-basic" label={props.elementConfig.name} variant="outlined"
+        <TextField label={props.elementConfig.name} variant="outlined"
+        autoFocus={true}
           {...props.elementConfig}
           value={props.value}
           onChange={props.valueChange}
@@ -34,8 +35,7 @@ const InputField = (props) => {
 
     default:
       inputs = (
-        <TextField id="outlined-basic" label={props.elementConfig.name} variant="outlined"
-        autoFocus={true}
+        <TextField label={props.elementConfig.name} variant="outlined"
           {...props.elementConfig}
           value={props.value}
           onChange={props.valueChange}
