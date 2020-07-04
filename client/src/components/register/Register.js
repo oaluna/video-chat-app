@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import InputField from "../common/InputField";
 import ButtonUser from "../common/button";
+import Box from "@material-ui/core/Box";
 import { withRouter } from "react-router";
 import { postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
@@ -69,15 +70,15 @@ const Register = (props) => {
         password: formData.password,
       };
 
-      if(formData.lastname!==''){
-          sendingData.name.lastname=formData.lastname
+      if (formData.lastname !== "") {
+        sendingData.name.lastname = formData.lastname;
       }
-        const result=await postData(urls.register.addNewUser,sendingData);
-        console.log(result)
-        if(result.status===200){
-          alert("User created Successfully")
-          props.history.push(`/`)
-        }
+      const result = await postData(urls.register.addNewUser, sendingData);
+      console.log(result);
+      if (result.status === 200) {
+        alert("User created Successfully");
+        props.history.push(`/`);
+      }
     }
   };
 
@@ -179,9 +180,11 @@ const Register = (props) => {
 
   return (
     <div>
-      <div style={{display:'flex',flexFlow:"column",alignItems:"center"}}>
+      <div
+        style={{ display: "flex", flexFlow: "column", alignItems: "center" }}
+      >
         <h2>Register</h2>
-        <div>
+        <Box>
           <form autoComplete="off">
             {registerFormArray.map((element) => {
               return (
@@ -196,9 +199,16 @@ const Register = (props) => {
               );
             })}
           </form>
-          <div style={{display:'flex',flexFlow:"column",alignItems:"center"}}>
+          <Box p={2}
+            style={{
+              display: "flex",
+              flexFlow: "column",
+              alignItems: "center",
+            }}
+          >
             <ButtonUser
-              text={"Submit"} color="primary"
+              text={"Submit"}
+              color="primary"
               buttonHandler={(e) => buttonHandler(e, "submit")}
               disabled={!formValid}
             />
@@ -207,8 +217,8 @@ const Register = (props) => {
               text={"Login Page"}
               buttonHandler={(e) => buttonHandler(e, "login")}
             />
-          </div>
-        </div>
+          </Box>
+        </Box>
       </div>
     </div>
   );

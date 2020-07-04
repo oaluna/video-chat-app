@@ -2,10 +2,19 @@ import React, { useState } from "react";
 
 import InputField from "../common/InputField";
 import ButtonUser from "../common/button";
+import Box from "@material-ui/core/Box";
 import { withRouter } from "react-router";
 import { getData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
 import { Container } from "@material-ui/core";
+import Notification from "../common/notifications.jsx";
+import Loader from "../common/loader"
+
+const defaultNotification = {
+  msg: "",
+  show: false,
+  type: "e",
+};
 
 const Login = (props) => {
   const checkValidation = (value, rules) => {
@@ -53,13 +62,29 @@ const Login = (props) => {
     if (value === "register") {
       props.history.push("/register");
     } else if (value === "login") {
+      setLoading(true)
       const formData = {};
       for (let formelements in loginForm) {
         formData[formelements] = loginForm[formelements].value;
       }
       const result = await getData(urls.login.getAllUsers, formData);
-      if (result.data.auth) {
-        props.history.push(`/chats?id=${result.data.userid}`);
+      if (result) {
+        setLoading(false)
+        if (result.data.auth) {
+          props.history.push(`/chats?id=${result.data.userid}`);
+        } else if (result.data.auth === false) {
+          setNotification({
+            msg: "Incorrect credentials",
+            show: true,
+            type: "e",
+          });
+        } else if (result.data === "User not found") {
+          setNotification({
+            msg: result.data,
+            show: true,
+            type: "i",
+          });
+        }
       }
     }
   };
@@ -95,6 +120,8 @@ const Login = (props) => {
   //States
   const [loginForm, setLoginForm] = useState(initalLoginForm);
   const [formValid, setFormValid] = useState(false);
+  const [notfication, setNotification] = useState(defaultNotification);
+  const [loading,setLoading]=useState(false)
 
   const loginFormArray = [];
   for (let key in loginForm) {
@@ -106,9 +133,11 @@ const Login = (props) => {
 
   return (
     <Container>
-      <div style={{display:'flex',flexFlow:"column",alignItems:"center"}}>
-      <h2>Login</h2>
-        <div>
+      <div
+        style={{ display: "flex", flexFlow: "column", alignItems: "center" }}
+      >
+        <h2>Login</h2>
+        <Box>
           {loginFormArray.map((element) => {
             return (
               <InputField
@@ -121,8 +150,11 @@ const Login = (props) => {
               />
             );
           })}
-        </div>
-        <div style={{display:'flex',flexFlow:"column",alignItems:"center"}}>
+        </Box>
+        <Box
+          p={2}
+          style={{ display: "flex", flexFlow: "column", alignItems: "center" }}
+        >
           <ButtonUser
             text={"Login"}
             color="primary"
@@ -134,8 +166,14 @@ const Login = (props) => {
             text={"Register"}
             buttonHandler={(e) => buttonHandler(e, "register")}
           />
-        </div>
+        </Box>
       </div>
+      <Notification
+        type={notfication.type}
+        show={notfication.show}
+        msg={notfication.msg}
+      />
+      {loading?<Loader/>:null}
     </Container>
   );
 };

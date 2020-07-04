@@ -5,10 +5,10 @@ import { getData, postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
 import ButtonUser from "../common/button.jsx";
 import Modal from "../common/modal.jsx";
+import { CircularProgress,Box } from '@material-ui/core';
 
 import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
-import { Divider } from '@material-ui/core';
 
 const Chat = (props) => {
   const [rooms, setRooms] = useState([]);
@@ -73,9 +73,11 @@ const Chat = (props) => {
 
     getRoomsList(query.id);
   }, [props.location.search]);
+
+  if(rooms.length>0){
   return (
-    <div>
-      <List>
+    <Box>
+      <List m={'auto'} >
         {rooms.map((room) => {
           return (
             <ListItem button divider alignItems="center" key={room._id} onClick={(e) => openChats(e, room._id)} style={{cursor:"pointer"}}>
@@ -89,8 +91,13 @@ const Chat = (props) => {
         />
         </List>
       {newGroupModal}
-    </div>
+    </Box>
   );
+}else{
+  return (<Box m={'auto'}>
+    <CircularProgress />
+  </Box>)
+}
 };
 
 export default Chat;
