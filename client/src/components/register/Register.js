@@ -6,6 +6,14 @@ import Box from "@material-ui/core/Box";
 import { withRouter } from "react-router";
 import { postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
+import Notification from "../common/notifications.jsx";
+import Loader from "../common/loader";
+
+const defaultNotification = {
+  msg: "",
+  show: false,
+  type: "e",
+};
 
 const Register = (props) => {
   const checkValidation = (value, rules) => {
@@ -57,6 +65,7 @@ const Register = (props) => {
     if (value === "login") {
       props.history.push("/");
     } else if (value === "submit") {
+      setLoading(true);
       const formData = {};
       for (let formelements in registerForm) {
         formData[formelements] = registerForm[formelements].value;
@@ -74,10 +83,22 @@ const Register = (props) => {
         sendingData.name.lastname = formData.lastname;
       }
       const result = await postData(urls.register.addNewUser, sendingData);
-      console.log(result);
       if (result.status === 200) {
-        alert("User created Successfully");
-        props.history.push(`/`);
+        setLoading(false);
+        setRegisterForm(initalRegisterForm);
+        setNotification({
+          msg: "User created successfully",
+          show: true,
+          type: "s",
+        });
+        // props.history.push(`/`);
+      }else{
+        setLoading(false);
+        setNotification({
+          msg: "Something went wrong",
+          show: true,
+          type: "e",
+        })
       }
     }
   };
@@ -169,6 +190,8 @@ const Register = (props) => {
   //States
   const [registerForm, setRegisterForm] = useState(initalRegisterForm);
   const [formValid, setFormValid] = useState(false);
+  const [notfication, setNotification] = useState(defaultNotification);
+  const [loading, setLoading] = useState(false);
 
   const registerFormArray = [];
   for (let key in registerForm) {
@@ -199,7 +222,8 @@ const Register = (props) => {
               );
             })}
           </form>
-          <Box p={2}
+          <Box
+            p={2}
             style={{
               display: "flex",
               flexFlow: "column",
@@ -220,6 +244,12 @@ const Register = (props) => {
           </Box>
         </Box>
       </div>
+      <Notification
+        type={notfication.type}
+        show={notfication.show}
+        msg={notfication.msg}
+      />
+      {loading ? <Loader /> : null}
     </div>
   );
 };

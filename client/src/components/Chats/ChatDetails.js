@@ -3,10 +3,13 @@ import io from "socket.io-client";
 import queryString from "query-string";
 
 import { ENDPOINT } from "../../config/config.js";
-import { getData,postData } from "../../axios/apiCalls.js";
+import { getData, postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
 
-import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
+import SendOutlinedIcon from "@material-ui/icons/SendOutlined";
+import { Container } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+
 import InputField from "../common/InputField.jsx";
 import MessageBox from "../common/messageBox.jsx";
 import Modal from "../common/modal.jsx";
@@ -49,21 +52,21 @@ const ChatDetails = (props) => {
     const oldMessages = await getData(`${urls.messages.messagesByGroup}/${id}`);
     let oldMessagesArray = [];
     if (oldMessages.status === 200) {
-      if(oldMessages.data.length!==0){
-      for (let message of oldMessages.data) {
-        let data = {
-          date: message.createdAt,
-          group: message.group,
-          message: message.message,
-          sender: message.sender,
-          sendername: message.sendername,
-        };
-        oldMessagesArray.push(data);
+      if (oldMessages.data.length !== 0) {
+        for (let message of oldMessages.data) {
+          let data = {
+            date: message.createdAt,
+            group: message.group,
+            message: message.message,
+            sender: message.sender,
+            sendername: message.sendername,
+          };
+          oldMessagesArray.push(data);
+        }
       }
-    }
       return await oldMessagesArray;
-    }else{
-      return await oldMessagesArray
+    } else {
+      return await oldMessagesArray;
     }
   };
 
@@ -115,32 +118,34 @@ const ChatDetails = (props) => {
 
   useEffect(() => {
     const query = queryString.parse(props.location.search);
-    socket = io(process.env.baseURL ||ENDPOINT);
+    socket = io(process.env.baseURL || ENDPOINT);
     setRoom(query.room);
 
     if (userData === null || messages.length === 0) {
+      getOldMessages(query.room).then((data) => {
+        setMessages(data);
+      });
+      getUserDetails(query.id).then((data) => {
+        setUserData(data);
+      });
+    }
+  }, []);
 
-      getOldMessages(query.room).then((data)=>{ setMessages(data)});
-      getUserDetails(query.id).then((data) => {setUserData(data)});
-    };
-
-  },[]);
-
-  useEffect(()=>{
-    if(userData && room){
-    socket.emit("join", { name: userData, room: room }, (err) => {
-      if (err) {
-        alert(err);
-      }
-    });
-  }
-  },[userData,room])
+  useEffect(() => {
+    if (userData && room) {
+      socket.emit("join", { name: userData, room: room }, (err) => {
+        if (err) {
+          alert(err);
+        }
+      });
+    }
+  }, [userData, room]);
 
   useEffect(() => {
     socket.on("message", (data) => {
       setMessages((messages) => [...messages, data]);
     });
-  },[]);
+  }, []);
 
   const modalToggle = (e, value) => {
     if (modal !== value) {
@@ -170,19 +175,25 @@ const ChatDetails = (props) => {
   let addUserModal = "";
   if (modal === true) {
     addUserModal = (
-      <Modal modalToggle={modalToggle} modalInputHandler={modalInputHandler} value={username} text="Add Member" create={AddMember}/>
+      <Modal
+        modalToggle={modalToggle}
+        modalInputHandler={modalInputHandler}
+        value={username}
+        text="Add Member"
+        create={AddMember}
+      />
     );
   } else {
     addUserModal = null;
   }
 
   return (
-    <div>
-      <div>
-        <MessageBox messages={messages} />
-      </div>
-      <div>
-        <form onSubmit={(e) => messageSent(e)} style={{display:"flex"}}>
+    <Container>
+      <Container maxWidth={"sm"}>
+        <MessageBox messages={messages} user={userData}/>
+      </Container>
+      <Grid item xs={12}>
+        <form onSubmit={(e) => messageSent(e)} style={{ display: "flex" }}>
           <InputField
             key={Object.keys(messageInput)[0]}
             elementConfig={messageInput.message.elementConfig}
@@ -191,16 +202,16 @@ const ChatDetails = (props) => {
             valueChange={(e) => inputChangeHandler(e, "message")}
           />
           <button type="submit" disabled={!messageInput.message.valid}>
-          <SendOutlinedIcon/>
+            <SendOutlinedIcon />
           </button>
         </form>
-      </div>
+      </Grid>
       <ButtonUser
         buttonHandler={(e) => modalToggle(e, true)}
         text="Add new Member"
       />
       {addUserModal}
-    </div>
+    </Container>
   );
 };
 

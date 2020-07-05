@@ -8,7 +8,7 @@ import { getData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
 import { Container } from "@material-ui/core";
 import Notification from "../common/notifications.jsx";
-import Loader from "../common/loader"
+import Loader from "../common/loader";
 
 const defaultNotification = {
   msg: "",
@@ -62,14 +62,14 @@ const Login = (props) => {
     if (value === "register") {
       props.history.push("/register");
     } else if (value === "login") {
-      setLoading(true)
+      setLoading(true);
       const formData = {};
       for (let formelements in loginForm) {
         formData[formelements] = loginForm[formelements].value;
       }
       const result = await getData(urls.login.getAllUsers, formData);
       if (result) {
-        setLoading(false)
+        setLoading(false);
         if (result.data.auth) {
           props.history.push(`/chats?id=${result.data.userid}`);
         } else if (result.data.auth === false) {
@@ -121,7 +121,7 @@ const Login = (props) => {
   const [loginForm, setLoginForm] = useState(initalLoginForm);
   const [formValid, setFormValid] = useState(false);
   const [notfication, setNotification] = useState(defaultNotification);
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
 
   const loginFormArray = [];
   for (let key in loginForm) {
@@ -173,7 +173,7 @@ const Login = (props) => {
         show={notfication.show}
         msg={notfication.msg}
       />
-      {loading?<Loader/>:null}
+      {loading ? <Loader /> : null}
     </Container>
   );
 };
