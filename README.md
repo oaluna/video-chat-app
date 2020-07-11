@@ -7,7 +7,7 @@ Incoming features:-
 4. File Attachments
 5. Better UI :)
 
-We develop React Native soon.
+I will develop React Native soon.
 
 To install all dependencies 
 <code>npm install</code>
