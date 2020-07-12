@@ -13,6 +13,7 @@ import InputField from "../common/InputField.jsx";
 import MessageBox from "../common/messageBox.jsx";
 import Modal from "../common/modal.jsx";
 import ButtonUser from "../common/button.jsx";
+import ChatNav from "../common/NavBar/ChatNav";
 
 let socket;
 
@@ -47,7 +48,7 @@ const ChatDetails = (props) => {
       return await userData.data;
     }
   };
-
+  console.log(room)
   const getOldMessages = async (id) => {
     const oldMessages = await getData(`${urls.messages.messagesByGroup}/${id}`);
     let oldMessagesArray = [];
@@ -188,47 +189,50 @@ const ChatDetails = (props) => {
   }
 
   return (
-    <Container>
-      <Container
-        maxWidth={"lg"}
-        style={{
-          backgroundColor: "#f5f5f5",
-          display: "flex",
-          flexDirection: "column",
-          maxHeight: "90vh",
-          overflowY: "scroll",
-        }}
-      >
-        <MessageBox messages={messages} user={userData} />
+    <>
+      <ChatNav />
+      <Container>
+        <Container
+          maxWidth={"lg"}
+          style={{
+            backgroundColor: "#f5f5f5",
+            display: "flex",
+            flexDirection: "column",
+            maxHeight: "90vh",
+            overflowY: "scroll",
+          }}
+        >
+          <MessageBox messages={messages} user={userData} />
+        </Container>
+        <form onSubmit={(e) => messageSent(e)} style={{ height: "10vh" }}>
+          <Grid container>
+            <Grid item sm={11}>
+              <InputField
+                key={Object.keys(messageInput)[0]}
+                elementConfig={messageInput.message.elementConfig}
+                value={messageInput.message.value}
+                shouldBeChecked={messageInput.message.validation}
+                valueChange={(e) => inputChangeHandler(e, "message")}
+              />
+            </Grid>
+            <Grid item sm>
+              <button
+                style={{ height: "100%", width: "100%" }}
+                type="submit"
+                disabled={!messageInput.message.valid}
+              >
+                <SendOutlinedIcon />
+              </button>
+            </Grid>
+          </Grid>
+        </form>
+        <ButtonUser
+          buttonHandler={(e) => modalToggle(e, true)}
+          text="Add new Member"
+        />
+        {addUserModal}
       </Container>
-      <form onSubmit={(e) => messageSent(e)} style={{ height: "10vh" }}>
-        <Grid container>
-          <Grid item sm={11}>
-            <InputField
-              key={Object.keys(messageInput)[0]}
-              elementConfig={messageInput.message.elementConfig}
-              value={messageInput.message.value}
-              shouldBeChecked={messageInput.message.validation}
-              valueChange={(e) => inputChangeHandler(e, "message")}
-            />
-          </Grid>
-          <Grid item sm>
-            <button
-              style={{ height: "100%", width: "100%" }}
-              type="submit"
-              disabled={!messageInput.message.valid}
-            >
-              <SendOutlinedIcon />
-            </button>
-          </Grid>
-        </Grid>
-      </form>
-      <ButtonUser
-        buttonHandler={(e) => modalToggle(e, true)}
-        text="Add new Member"
-      />
-      {addUserModal}
-    </Container>
+    </>
   );
 };
 

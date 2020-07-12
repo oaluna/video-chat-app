@@ -5,6 +5,7 @@ import { getData, postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
 import ButtonUser from "../common/button.jsx";
 import Modal from "../common/modal.jsx";
+import GroupListNav from "../common/NavBar/GroupListNav"
 import { CircularProgress,Box } from '@material-ui/core';
 
 import { List } from '@material-ui/core';
@@ -74,8 +75,10 @@ const Chat = (props) => {
     getRoomsList(query.id);
   }, [props.location.search]);
 
-  if(rooms.length>0){
+  if(rooms.length!==0){
   return (
+    <>
+    <GroupListNav/>
     <Box>
       <List m={'auto'} >
         {rooms.map((room) => {
@@ -92,10 +95,12 @@ const Chat = (props) => {
         </List>
       {newGroupModal}
     </Box>
+    </>
   );
 }else{
-  return (<Box m={'auto'}>
-    <CircularProgress />
+  return (<Box>
+    <GroupListNav/>
+    <CircularProgress style={{margin:"0 auto"}}/>
   </Box>)
 }
 };
