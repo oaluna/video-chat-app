@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const keyFiles = require("./config/keys.js");
+// const keyFiles = require("./config/keys.js");
 const mongoose = require("mongoose");
 const http = require("http");
 const socketIo = require("socket.io");
@@ -42,8 +42,8 @@ app.use("/api/groups", groups);
 app.use("/api/groupmessages", groupmessages);
 
 //DB Configuration
-const db = keyFiles.mongoURI;
-// const db = process.env.mongoURI;
+// const db = keyFiles.mongoURI;
+const db = process.env.mongoURI;
 
 //Connecting To DB
 mongoose
