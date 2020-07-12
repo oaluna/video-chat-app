@@ -5,7 +5,9 @@ Incoming features:-
 2. JWT authentication
 3. Push Notification
 4. File Attachments
-5. Better UI :)
+5. Lazy Loading
+6. Dark Mode
+7. Better UI :)
 
 I will develop React Native soon.
 

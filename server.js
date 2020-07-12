@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const http = require("http");
 const socketIo = require("socket.io");
 const morgan = require("morgan");
-const winston = require("winston");
 const fs = require("fs");
 require("dotenv").config()
 const { SocketMessaging } = require("./socket/socket.js");
@@ -32,10 +31,10 @@ const messages = require("./routes/Messages.js");
 const groups = require("./routes/Groups.js");
 const groupmessages = require("./routes/GroupMessages.js");
 
-//App Routes
-// app.get("/", (req, res) => {
-//   res.send("Welcome to Chat Application");
-// });
+// App Routes
+app.get("/", (req, res) => {
+  res.send("Welcome to Chat Application");
+});
 
 app.use("/api/users", users);
 app.use("/api/messages", messages);
@@ -75,25 +74,12 @@ if (process.env.NODE_ENV === "production") {
   })
 }
 
+//Socket configuration
+const io = socketIo(server);
+SocketMessaging(io);
+
 // Port Configuration
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
   console.log(`Server running at ${port}`);
 });
-
-//Socket configuration
-const io = socketIo(server);
-SocketMessaging(io);
-
-// Logger configuration
-const logConfiguration = {
-  transports: [
-    new winston.transports.File({
-      filename: "./error.log",
-    }),
-  ],
-};
-
-// Create the logger
-const logger = winston.createLogger(logConfiguration);
-module.exports = { logger };

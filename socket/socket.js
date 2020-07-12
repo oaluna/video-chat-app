@@ -1,6 +1,6 @@
 const {addNewMessage}=require("../controllers/GroupMessages.js")
 
-const SocketMessaging = (io) => {
+ const SocketMessaging = (io) => {
   io.on("connection", (socket) => {
     let roomID = null;
     let username = "";

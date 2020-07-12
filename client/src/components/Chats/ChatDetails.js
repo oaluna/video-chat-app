@@ -7,8 +7,7 @@ import { getData, postData } from "../../axios/apiCalls.js";
 import { urls } from "../../config/urls.js";
 
 import SendOutlinedIcon from "@material-ui/icons/SendOutlined";
-import { Container } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import { Container, Grid } from "@material-ui/core";
 
 import InputField from "../common/InputField.jsx";
 import MessageBox from "../common/messageBox.jsx";
@@ -24,6 +23,7 @@ const ChatDetails = (props) => {
       elementConfig: {
         type: "text",
         placeholder: "your message...",
+        fullWidth: true,
       },
       value: "",
       validation: {
@@ -189,23 +189,40 @@ const ChatDetails = (props) => {
 
   return (
     <Container>
-      <Container maxWidth={"sm"}>
-        <MessageBox messages={messages} user={userData}/>
+      <Container
+        maxWidth={"lg"}
+        style={{
+          backgroundColor: "#f5f5f5",
+          display: "flex",
+          flexDirection: "column",
+          maxHeight: "90vh",
+          overflowY: "scroll",
+        }}
+      >
+        <MessageBox messages={messages} user={userData} />
       </Container>
-      <Grid item xs={12}>
-        <form onSubmit={(e) => messageSent(e)} style={{ display: "flex" }}>
-          <InputField
-            key={Object.keys(messageInput)[0]}
-            elementConfig={messageInput.message.elementConfig}
-            value={messageInput.message.value}
-            shouldBeChecked={messageInput.message.validation}
-            valueChange={(e) => inputChangeHandler(e, "message")}
-          />
-          <button type="submit" disabled={!messageInput.message.valid}>
-            <SendOutlinedIcon />
-          </button>
-        </form>
-      </Grid>
+      <form onSubmit={(e) => messageSent(e)} style={{ height: "10vh" }}>
+        <Grid container>
+          <Grid item sm={11}>
+            <InputField
+              key={Object.keys(messageInput)[0]}
+              elementConfig={messageInput.message.elementConfig}
+              value={messageInput.message.value}
+              shouldBeChecked={messageInput.message.validation}
+              valueChange={(e) => inputChangeHandler(e, "message")}
+            />
+          </Grid>
+          <Grid item sm>
+            <button
+              style={{ height: "100%", width: "100%" }}
+              type="submit"
+              disabled={!messageInput.message.valid}
+            >
+              <SendOutlinedIcon />
+            </button>
+          </Grid>
+        </Grid>
+      </form>
       <ButtonUser
         buttonHandler={(e) => modalToggle(e, true)}
         text="Add new Member"

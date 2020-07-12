@@ -1,7 +1,7 @@
 const GroupMessages = require("../models/GroupMessages.js");
 const Group = require("../models/Groups.js");
 const User = require("../models/Users.js");
-const { logger } = require("../server.js");
+const { logger } = require("../utils/winston.js");
 
 const addNewMessage = async (data) => {
   const sender = await User.findById(data.sender);
@@ -10,7 +10,7 @@ const addNewMessage = async (data) => {
     sender: sender,
     group: group,
     message: data.message,
-    sendername: data.sender,
+    sendername: data.sendername,
   });
 
   newMessage.save().then((message) => {
@@ -19,7 +19,7 @@ const addNewMessage = async (data) => {
   });
 };
 
-const getAllGroupMessages=(req,res)=>{
+const getAllGroupMessages = (req, res) => {
   GroupMessages.find()
     .sort({ date: -1 })
     .then((messages) => {
@@ -30,28 +30,28 @@ const getAllGroupMessages=(req,res)=>{
       }
     })
     .catch((err) => {
-      logger.error({message:`${err}`})
+      logger.error({ message: `${err}` });
       console.log({ message: `${err} in getting messages` });
       res.sendStatus(500);
     });
-
-}
+};
 const getMessagesByGroup = async (req, res) => {
-  const groupId=req.params.id
-  GroupMessages.find({group:groupId})
-  .sort({ date: -1 }).limit(50)
-  .then((messages) => {
-    if (Object.values(messages).length !== 0) {
-      res.json(messages);
-    } else {
-      res.sendStatus(204);
-    }
-  })
-  .catch((err) => {
-    logger.error({message:`${err.stack}`})
-    console.log({ message: `${err} in getting messages` });
-    res.sendStatus(500);
-  });
+  const groupId = req.params.id;
+  GroupMessages.find({ group: groupId })
+    .sort({ date: -1 })
+    .limit(50)
+    .then((messages) => {
+      if (Object.values(messages).length !== 0) {
+        res.json(messages);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      logger.error({ message: `${err.stack}` });
+      console.log({ message: `${err} in getting messages` });
+      res.sendStatus(500);
+    });
 };
 
-module.exports = { addNewMessage, getMessagesByGroup,getAllGroupMessages };
+module.exports = { addNewMessage, getMessagesByGroup, getAllGroupMessages };

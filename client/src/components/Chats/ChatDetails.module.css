@@ -4,11 +4,16 @@
   margin-bottom: 10px;
 }
 
-.MsgBubble {
-  max-width: 450px;
-  padding: 15px;
-  border-radius: 15px;
-  border:1px solid black;
+.SenderMessage {
+  background-color: #5593c5 !important;
+}
+
+.ReceiverMessage {
+  background-color: #CCCCCC !important;
+}
+
+.SystemMessage {
+  background-color: #ea4c89 !important;
 }
 
 .MsgInfo {
