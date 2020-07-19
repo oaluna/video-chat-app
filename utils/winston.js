@@ -4,7 +4,7 @@ const winston = require("winston");
 const logConfiguration = {
   transports: [
     new winston.transports.File({
-      filename: "../error.log",
+      filename: "./error.log",
     }),
   ],
 };

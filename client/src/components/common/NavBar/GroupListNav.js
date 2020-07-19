@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -7,6 +7,16 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
+
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import MailIcon from "@material-ui/icons/Mail";
+import Drawer from "@material-ui/core/Drawer";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +76,12 @@ const useStyles = makeStyles((theme) => ({
 const GroupListNav = () => {
   const classes = useStyles();
 
+  const [open, setOpen] = useState(false);
+
+  const toggleClose = () => {
+    setOpen(!open);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -75,11 +91,12 @@ const GroupListNav = () => {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={toggleClose}
           >
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+            Welcome Prerit
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -96,6 +113,45 @@ const GroupListNav = () => {
           </div>
         </Toolbar>
       </AppBar>
+      <Drawer
+        // className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        // classes={{
+        //   paper: classes.drawerPaper,
+        // }}
+      >
+        <div
+        // className={classes.drawerHeader}
+        >
+          <IconButton onClick={toggleClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {["All mail", "Trash", "Spam"].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
     </div>
   );
 };
