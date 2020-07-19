@@ -12,11 +12,14 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
+import { withRouter } from "react-router";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import VideoCallIcon from "@material-ui/icons/VideoCall";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import queryString from "query-string";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,7 +76,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const GroupListNav = () => {
+const GroupListNav = (props) => {
+  const goVideoCall = () => {
+    const query = queryString.parse(props.location.search);
+    props.history.push(`/videocall?user=${query.id}`);
+  };
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -131,29 +138,32 @@ const GroupListNav = () => {
         </div>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button key={1}>
+            <ListItemIcon>
+              <AddCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Create New Group"} />
+          </ListItem>
+
+          <ListItem button key={2} onClick={goVideoCall}>
+            <ListItemIcon>
+              <VideoCallIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Video Call"} />
+          </ListItem>
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button key={3}>
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Logout"} />
+          </ListItem>
         </List>
       </Drawer>
     </div>
   );
 };
 
-export default GroupListNav;
+export default withRouter(GroupListNav);
