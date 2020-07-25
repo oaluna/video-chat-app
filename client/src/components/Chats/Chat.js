@@ -14,6 +14,12 @@ import { ListItem } from '@material-ui/core';
 const Chat = (props) => {
   const [rooms, setRooms] = useState([]);
 
+  useEffect(() => {
+    const query = queryString.parse(props.location.search);
+
+    getRoomsList(query.id);
+  }, [props.location.search]);
+
   const getRoomsList = async (id) => {
     const roomslist = await getData(`${urls.rooms.getUserRooms}/${id}`, null);
     if (roomslist.status === 200) {
@@ -26,16 +32,11 @@ const Chat = (props) => {
     props.history.push(`/chat${props.location.search}&room=${roomid}`);
   };
 
-  useEffect(() => {
-    const query = queryString.parse(props.location.search);
-
-    getRoomsList(query.id);
-  }, [props.location.search]);
 
   if(rooms.length!==0){
   return (
     <>
-    <GroupListNav getRoomsList={getRoomsList}/>
+    <GroupListNav getRoomsList={(id)=>getRoomsList(id)}/>
     <Box>
       <List m={'auto'} >
         {rooms.map((room) => {
@@ -51,7 +52,7 @@ const Chat = (props) => {
   );
 }else{
   return (<Box>
-    <GroupListNav/>
+    <GroupListNav getRoomsList={(id)=>getRoomsList(id)}/>
     <CircularProgress style={{margin:"0 auto"}}/>
   </Box>)
 }

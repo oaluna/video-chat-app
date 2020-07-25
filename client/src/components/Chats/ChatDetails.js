@@ -13,7 +13,7 @@ import InputField from "../common/InputField.jsx";
 import MessageBox from "../common/messageBox.jsx";
 import Modal from "../common/modal.jsx";
 import ButtonUser from "../common/button.jsx";
-import ChatNav from "../common/NavBar/ChatNav";
+import GroupListNav from '../common/NavBar/GroupListNav'
 
 let socket;
 
@@ -39,8 +39,6 @@ const ChatDetails = (props) => {
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState(initalMessageInput);
-  const [modal, setmodal] = useState(false);
-  const [username, setUsername] = useState("");
 
   const getUserDetails = async (id) => {
     const userData = await getData(`${urls.users.getOneuser}/${id}`);
@@ -48,7 +46,6 @@ const ChatDetails = (props) => {
       return await userData.data;
     }
   };
-  console.log(room)
   const getOldMessages = async (id) => {
     const oldMessages = await getData(`${urls.messages.messagesByGroup}/${id}`);
     let oldMessagesArray = [];
@@ -148,49 +145,9 @@ const ChatDetails = (props) => {
     });
   }, []);
 
-  const modalToggle = (e, value) => {
-    if (modal !== value) {
-      setmodal(value);
-    }
-  };
-
-  const AddMember = async (e) => {
-    const query = queryString.parse(props.location.search);
-    e.preventDefault();
-    const data = {
-      group: query.room,
-      username: username,
-    };
-    const result = await postData(urls.rooms.addNewUser, data);
-    if (result.status === 200) {
-      modalToggle(false);
-      setUsername("");
-      alert("Member added successfully");
-    }
-  };
-
-  const modalInputHandler = (e) => {
-    setUsername(e.target.value.trim());
-  };
-
-  let addUserModal = "";
-  if (modal === true) {
-    addUserModal = (
-      <Modal
-        modalToggle={modalToggle}
-        modalInputHandler={modalInputHandler}
-        value={username}
-        text="Add Member"
-        create={AddMember}
-      />
-    );
-  } else {
-    addUserModal = null;
-  }
-
   return (
     <>
-      <ChatNav />
+      <GroupListNav />
       <Container>
         <Container
           maxWidth={"lg"}
@@ -226,11 +183,6 @@ const ChatDetails = (props) => {
             </Grid>
           </Grid>
         </form>
-        <ButtonUser
-          buttonHandler={(e) => modalToggle(e, true)}
-          text="Add new Member"
-        />
-        {addUserModal}
       </Container>
     </>
   );

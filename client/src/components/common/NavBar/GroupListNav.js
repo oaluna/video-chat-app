@@ -7,7 +7,7 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import FormDialog from '../DialogBox'
+import FormDialog from "../DialogBox";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -18,10 +18,19 @@ import List from "@material-ui/core/List";
 import { withRouter } from "react-router";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import VideoCallIcon from "@material-ui/icons/VideoCall";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import queryString from "query-string";
-import { getData, postData } from "../../../axios/apiCalls.js";
+import { postData } from "../../../axios/apiCalls.js";
 import { urls } from "../../../config/urls.js";
+import Notification from "../notifications";
+import { useTimedState } from "../../../utils/utils.js";
+
+const defaultNotification = {
+  msg: "",
+  show: false,
+  type: "e",
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,23 +88,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GroupListNav = (props) => {
-
+  console.log(props);
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
 
   const [openCreateGroup, setOpenCreateGroup] = useState(false);
 
+  const [openAddMember, setOpenAddMember] = useState(false);
+
+  const [notification, setNotification] = useTimedState(
+    defaultNotification,
+    5000
+  );
+
   const [groupname, setGroupname] = useState("");
+
+  const [memberName, setMemberName] = useState("");
 
   const goVideoCall = () => {
     const query = queryString.parse(props.location.search);
     props.history.push(`/videocall?user=${query.id}`);
   };
 
-  const setGroupNames=(e)=>{
-setGroupname(e.target.value)
-  }
+  const setGroupNames = (e) => {
+    setGroupname(e.target.value);
+  };
+
+  const setMembersName = (e) => {
+    setMemberName(e.target.value);
+  };
 
   const createGroup = async (e) => {
     const query = queryString.parse(props.location.search);
@@ -109,7 +131,30 @@ setGroupname(e.target.value)
       setOpenCreateGroup(false);
       setGroupname("");
       props.getRoomsList(query.id);
-      alert("Group created successfully");
+      setNotification({
+        msg: "Group Created Successfully",
+        show: true,
+        type: "s",
+      });
+    }
+  };
+
+  const addMember = async (e) => {
+    const query = queryString.parse(props.location.search);
+    e.preventDefault();
+    const data = {
+      group: query.room,
+      username: memberName,
+    };
+    const result = await postData(urls.rooms.addNewUser, data);
+    if (result.status === 200) {
+      setOpenAddMember(false);
+      setMemberName("");
+      setNotification({
+        msg: "Member Added Successfully",
+        show: true,
+        type: "s",
+      });
     }
   };
 
@@ -117,89 +162,123 @@ setGroupname(e.target.value)
     setOpen(!open);
   };
 
-  const dialogData={
-    title:'Create New Group',
-    msg:'Enter Group Name to create a group',
-    label:'group name',
-    proceedText:'Create'
-  }
+  const createGroupData = {
+    title: "Create New Group",
+    msg: "Enter Group Name to create a group",
+    label: "group name",
+    proceedText: "Create",
+  };
+
+  const addMemberData = {
+    title: "Add New Member",
+    msg: "Enter user name to add it to the group",
+    label: "user name",
+    proceedText: "Add",
+  };
 
   return (
     <>
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleClose}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Welcome Prerit
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleClose}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography className={classes.title} variant="h6" noWrap>
+              Welcome Prerit
+            </Typography>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ "aria-label": "search" }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        // className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
-        // classes={{
-        //   paper: classes.drawerPaper,
-        // }}
-      >
-        <div
-        // className={classes.drawerHeader}
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          // className={classes.drawer}
+          variant="persistent"
+          anchor="left"
+          open={open}
+          // classes={{
+          //   paper: classes.drawerPaper,
+          // }}
         >
-          <IconButton onClick={toggleClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          <ListItem button key={1} onClick={()=>setOpenCreateGroup(true)}>
-            <ListItemIcon>
-              <AddCircleIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Create New Group"} />
-          </ListItem>
+          <div
+          // className={classes.drawerHeader}
+          >
+            <IconButton onClick={toggleClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            <ListItem button key={1} onClick={() => setOpenCreateGroup(true)}>
+              <ListItemIcon>
+                <AddCircleIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Create New Group"} />
+            </ListItem>
 
-          <ListItem button key={2} onClick={goVideoCall}>
-            <ListItemIcon>
-              <VideoCallIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Video Call"} />
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem button key={3}>
-            <ListItemIcon>
-              <ExitToAppIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Logout"} />
-          </ListItem>
-        </List>
-      </Drawer>
-    </div>
-    <FormDialog open={openCreateGroup} setOpen={setOpenCreateGroup} dialogData={dialogData} value={groupname} setValue={setGroupNames} clickFunc={createGroup}/>
+            <ListItem button key={2} onClick={goVideoCall}>
+              <ListItemIcon>
+                <VideoCallIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Video Call"} />
+            </ListItem>
+
+            <ListItem button key={3} onClick={() => setOpenAddMember(true)}>
+              <ListItemIcon>
+                <PersonAddIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Add New Member"} />
+            </ListItem>
+          </List>
+          <Divider />
+          <List>
+            <ListItem button key={3}>
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Logout"} />
+            </ListItem>
+          </List>
+        </Drawer>
+      </div>
+      <FormDialog
+        open={openCreateGroup}
+        setOpen={setOpenCreateGroup}
+        dialogData={createGroupData}
+        value={groupname}
+        setValue={setGroupNames}
+        clickFunc={createGroup}
+      />
+      <FormDialog
+        open={openAddMember}
+        setOpen={setOpenAddMember}
+        dialogData={addMemberData}
+        value={memberName}
+        setValue={setMembersName}
+        clickFunc={addMember}
+      />
+      <Notification
+        type={notification.type}
+        show={notification.show}
+        msg={notification.msg}
+      />
     </>
   );
 };
