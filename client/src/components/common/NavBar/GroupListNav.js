@@ -7,7 +7,7 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-
+import FormDialog from '../DialogBox'
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -20,6 +20,8 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import VideoCallIcon from "@material-ui/icons/VideoCall";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import queryString from "query-string";
+import { getData, postData } from "../../../axios/apiCalls.js";
+import { urls } from "../../../config/urls.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,19 +79,53 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GroupListNav = (props) => {
+
+  const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
+
+  const [openCreateGroup, setOpenCreateGroup] = useState(false);
+
+  const [groupname, setGroupname] = useState("");
+
   const goVideoCall = () => {
     const query = queryString.parse(props.location.search);
     props.history.push(`/videocall?user=${query.id}`);
   };
-  const classes = useStyles();
 
-  const [open, setOpen] = useState(false);
+  const setGroupNames=(e)=>{
+setGroupname(e.target.value)
+  }
+
+  const createGroup = async (e) => {
+    const query = queryString.parse(props.location.search);
+    e.preventDefault();
+    const data = {
+      id: query.id,
+      name: groupname,
+    };
+    const result = await postData(urls.rooms.addNewRoom, data);
+    if (result.status === 200) {
+      setOpenCreateGroup(false);
+      setGroupname("");
+      props.getRoomsList(query.id);
+      alert("Group created successfully");
+    }
+  };
 
   const toggleClose = () => {
     setOpen(!open);
   };
 
+  const dialogData={
+    title:'Create New Group',
+    msg:'Enter Group Name to create a group',
+    label:'group name',
+    proceedText:'Create'
+  }
+
   return (
+    <>
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
@@ -138,7 +174,7 @@ const GroupListNav = (props) => {
         </div>
         <Divider />
         <List>
-          <ListItem button key={1}>
+          <ListItem button key={1} onClick={()=>setOpenCreateGroup(true)}>
             <ListItemIcon>
               <AddCircleIcon />
             </ListItemIcon>
@@ -163,6 +199,8 @@ const GroupListNav = (props) => {
         </List>
       </Drawer>
     </div>
+    <FormDialog open={openCreateGroup} setOpen={setOpenCreateGroup} dialogData={dialogData} value={groupname} setValue={setGroupNames} clickFunc={createGroup}/>
+    </>
   );
 };
 
