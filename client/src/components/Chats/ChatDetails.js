@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import io from "socket.io-client";
 import queryString from "query-string";
 
@@ -13,7 +13,7 @@ import InputField from "../common/InputField.jsx";
 import MessageBox from "../common/messageBox.jsx";
 import Modal from "../common/modal.jsx";
 import ButtonUser from "../common/button.jsx";
-import GroupListNav from '../common/NavBar/GroupListNav'
+import GroupListNav from "../common/NavBar/GroupListNav";
 
 let socket;
 
@@ -129,6 +129,11 @@ const ChatDetails = (props) => {
     }
   }, []);
 
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     if (userData && room) {
       socket.emit("join", { name: userData, room: room }, (err) => {
@@ -145,6 +150,8 @@ const ChatDetails = (props) => {
     });
   }, []);
 
+  useEffect(scrollToBottom, [messages]);
+
   return (
     <>
       <GroupListNav />
@@ -155,15 +162,16 @@ const ChatDetails = (props) => {
             backgroundColor: "#f5f5f5",
             display: "flex",
             flexDirection: "column",
-            maxHeight: "90vh",
+            maxHeight: "80vh",
             overflowY: "scroll",
           }}
         >
           <MessageBox messages={messages} user={userData} />
+          <div ref={messagesEndRef} />
         </Container>
         <form onSubmit={(e) => messageSent(e)} style={{ height: "10vh" }}>
           <Grid container>
-            <Grid item sm={11}>
+            <Grid item md={11}>
               <InputField
                 key={Object.keys(messageInput)[0]}
                 elementConfig={messageInput.message.elementConfig}
@@ -172,7 +180,7 @@ const ChatDetails = (props) => {
                 valueChange={(e) => inputChangeHandler(e, "message")}
               />
             </Grid>
-            <Grid item sm>
+            <Grid item md>
               <button
                 style={{ height: "100%", width: "100%" }}
                 type="submit"

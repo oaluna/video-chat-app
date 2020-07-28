@@ -88,7 +88,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GroupListNav = (props) => {
-  console.log(props);
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -175,7 +174,7 @@ const GroupListNav = (props) => {
     label: "user name",
     proceedText: "Add",
   };
-
+ 
   return (
     <>
       <div className={classes.root}>
@@ -226,26 +225,36 @@ const GroupListNav = (props) => {
           </div>
           <Divider />
           <List>
+          { props.location.pathname === "/chats"
+           &&
             <ListItem button key={1} onClick={() => setOpenCreateGroup(true)}>
               <ListItemIcon>
                 <AddCircleIcon />
               </ListItemIcon>
               <ListItemText primary={"Create New Group"} />
             </ListItem>
+          }
 
+          { props.location.pathname === "/videocall"
+           &&
             <ListItem button key={2} onClick={goVideoCall}>
               <ListItemIcon>
                 <VideoCallIcon />
               </ListItemIcon>
               <ListItemText primary={"Video Call"} />
             </ListItem>
+          }
 
+            { props.location.pathname === "/chat" &&
             <ListItem button key={3} onClick={() => setOpenAddMember(true)}>
               <ListItemIcon>
                 <PersonAddIcon />
               </ListItemIcon>
               <ListItemText primary={"Add New Member"} />
             </ListItem>
+            }
+
+            
           </List>
           <Divider />
           <List>
