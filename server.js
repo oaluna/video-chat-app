@@ -42,8 +42,7 @@ app.use("/api/groups", groups);
 app.use("/api/groupmessages", groupmessages);
 
 //DB Configuration
-// const db = keyFiles.mongoURI;
-const db = process.env.mongoURI;
+const db = process.env.mongoURI || keyFiles.mongoURI;
 
 //Connecting To DB
 mongoose

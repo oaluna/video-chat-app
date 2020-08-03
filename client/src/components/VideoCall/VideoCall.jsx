@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Webcam from "react-webcam";
 import io from "socket.io-client";
 import queryString from "query-string";
+import { ENDPOINT } from "../../config/config.js";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import CallIcon from "@material-ui/icons/Call";
 import Button from "@material-ui/core/Button";
@@ -13,12 +14,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+let socket;
 const VideoCall = (props) => {
   const [calling, setCalling] = useState(false);
   const webcamRef = useRef(null);
-  const mediaRecorderRef = useRef(null);
   const incomingVideoRef = useRef(null);
-  const [incomingData, setIncomingData] = useState(null);
   const [cameraFace, setCameraFace] = useState("user");
   const [hasCamera, setHasCamera] = useState(true);
   const [open, setOpen] = useState(true);
@@ -29,6 +29,7 @@ const VideoCall = (props) => {
 
   const query = queryString.parse(props.location.search);
   useEffect(() => {
+    socket = io(process.env.baseURL || ENDPOINT);
     setCallUsers({ ...callUsers, caller: query.user });
   }, []);
 
@@ -55,21 +56,24 @@ const VideoCall = (props) => {
     setOpen(false);
   };
 
-  const connectCall = () => {
+  const connectCall = (e) => {
     setCalling(true);
-    incomingVideoRef.current.srcObject = new MediaStream(webcamRef.current.stream);
-    console.log(incomingVideoRef.current)
+    setOpen(false);
+  };
 
-    // video.srcObject = mediaStream;
-    // video.onloadedmetadata = function(e) {
-    //   video.play();
-    // };
-    // mediaRecorderRef.current.addEventListener(
-    //   "dataavailable",
-    //   handleDataAvailable
-    // );
-    // mediaRecorderRef.current.start();
-}
+  const callUser = () => {
+    if (calling) {
+      console.log(callUsers)
+      incomingVideoRef.current.srcObject = new MediaStream(
+        webcamRef.current.stream
+
+      );
+    }
+  };
+
+  useMemo(() => {
+    return callUser();
+  }, [calling,incomingVideoRef, webcamRef, cameraFace]);
 
   // const disconnectCall = React.useCallback(() => {
   //   mediaRecorderRef.current.stop();
