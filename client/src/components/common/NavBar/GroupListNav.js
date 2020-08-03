@@ -235,7 +235,7 @@ const GroupListNav = (props) => {
             </ListItem>
           }
 
-          { props.location.pathname === "/videocall"
+          { props.location.pathname !== "/videocall"
            &&
             <ListItem button key={2} onClick={goVideoCall}>
               <ListItemIcon>

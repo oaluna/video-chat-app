@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Webcam from "react-webcam";
 import io from "socket.io-client";
 import queryString from "query-string";
@@ -14,6 +14,24 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 const VideoCall = (props) => {
+  const [calling, setCalling] = useState(false);
+  const webcamRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const incomingVideoRef = useRef(null);
+  const [incomingData, setIncomingData] = useState(null);
+  const [cameraFace, setCameraFace] = useState("user");
+  const [hasCamera, setHasCamera] = useState(true);
+  const [open, setOpen] = useState(true);
+  const [callUsers, setCallUsers] = useState({
+    caller: "",
+    receiver: "",
+  });
+
+  const query = queryString.parse(props.location.search);
+  useEffect(() => {
+    setCallUsers({ ...callUsers, caller: query.user });
+  }, []);
+
   const changeCamera = (e) => {
     e.preventDefault();
     if (cameraFace !== "user") {
@@ -37,23 +55,26 @@ const VideoCall = (props) => {
     setOpen(false);
   };
 
-  const connectCall = (e) => {
-    e.preventDefault();
-    console.log(callUsers);
-  };
+  const connectCall = () => {
+    setCalling(true);
+    incomingVideoRef.current.srcObject = new MediaStream(webcamRef.current.stream);
+    console.log(incomingVideoRef.current)
 
-  const [cameraFace, setCameraFace] = useState("user");
-  const [hasCamera, setHasCamera] = useState(true);
-  const [open, setOpen] = useState(true);
-  const [callUsers, setCallUsers] = useState({
-    caller: "",
-    receiver: "",
-  });
+    // video.srcObject = mediaStream;
+    // video.onloadedmetadata = function(e) {
+    //   video.play();
+    // };
+    // mediaRecorderRef.current.addEventListener(
+    //   "dataavailable",
+    //   handleDataAvailable
+    // );
+    // mediaRecorderRef.current.start();
+}
 
-  const query = queryString.parse(props.location.search);
-  useEffect(() => {
-    setCallUsers({...callUsers,caller:query.user})
-  }, []);
+  // const disconnectCall = React.useCallback(() => {
+  //   mediaRecorderRef.current.stop();
+  //   setCalling(false);
+  // }, [mediaRecorderRef, webcamRef, setCalling]);
 
   const videoConstraints = {
     // width: 1280,
@@ -104,6 +125,7 @@ const VideoCall = (props) => {
           onUserMediaError={noCameraFound}
           forceScreenshotSourceSize={true}
           videoConstraints={videoConstraints}
+          ref={webcamRef}
         />
         <IconButton
           color="primary"
@@ -120,6 +142,7 @@ const VideoCall = (props) => {
           <CallIcon />
         </IconButton>
         {dialogBox}
+        <video ref={incomingVideoRef} autoPlay></video>
       </div>
     );
   } else {
