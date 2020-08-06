@@ -63,17 +63,30 @@ const VideoCall = (props) => {
 
   const callUser = () => {
     if (calling) {
-      console.log(callUsers)
-      incomingVideoRef.current.srcObject = new MediaStream(
-        webcamRef.current.stream
-
-      );
+      // incomingVideoRef.current.srcObject = new MediaStream(
+      //   webcamRef.current.stream);
+      console.log(new MediaStream(
+          webcamRef.current.stream))
+      let data = {
+        users: callUsers,
+        socket: socket.id,
+        stream: new MediaStream(webcamRef.current.stream),
+      };
+      socket.emit("calling", data, () => {
+        console.log("video sent");
+      });
     }
   };
 
   useMemo(() => {
     return callUser();
-  }, [calling,incomingVideoRef, webcamRef, cameraFace]);
+  }, [calling, incomingVideoRef, webcamRef, cameraFace]);
+
+  // useEffect(() => {
+  //   socket.on("receiveCall", (data) => {
+  //     incomingVideoRef.current.srcObject=data
+  //   });
+  // }, []);
 
   // const disconnectCall = React.useCallback(() => {
   //   mediaRecorderRef.current.stop();

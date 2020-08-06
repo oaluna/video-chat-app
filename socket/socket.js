@@ -66,12 +66,13 @@ const {addNewMessage}=require("../controllers/GroupMessages.js")
       }
     })
     .on('calling', (data) => {
-      const receiver = users.get(data.to);
-      if (receiver) {
-        receiver.emit('calling', { ...data, from: id });
-      } else {
-        socket.emit('failed');
-      }
+      console.log(data)
+      // const receiver = users.get(data.to);
+      // if (receiver) {
+      //   receiver.emit('calling', { ...data, from: id });
+      // } else {
+      //   socket.emit('failed');
+      // }
     })
     .on('endcall', (data) => {
       const receiver = users.get(data.to);
