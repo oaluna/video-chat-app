@@ -15,3 +15,13 @@ export const useTimedState = (defaultValue, timeout) => {
   }];
 };
 
+export const get = (object, path, defaultValue) => {
+  let res = object;
+  let index = 0;
+  while (res !== undefined && res !== null && index < path.length) {
+    res = res[path[index]];
+    index += 1;
+  }
+  return (res === undefined || res === null) ? defaultValue : res;
+};
+
