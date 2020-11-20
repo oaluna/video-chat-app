@@ -51,39 +51,6 @@ const {addNewMessage}=require("../controllers/GroupMessages.js")
         sender: 0,
       });
     });
-
-    //VideoCall section
-    let id;
-    socket
-    .on('initcall', async () => {
-      id = await users.create(socket);
-      socket.emit('initcall', { id });
-    })
-    .on('requestcall', (data) => {
-      const receiver = users.get(data.to);
-      if (receiver) {
-        receiver.emit('requestcall', { from: id });
-      }
-    })
-    .on('calling', (data) => {
-      console.log(data)
-      // const receiver = users.get(data.to);
-      // if (receiver) {
-      //   receiver.emit('calling', { ...data, from: id });
-      // } else {
-      //   socket.emit('failed');
-      // }
-    })
-    .on('endcall', (data) => {
-      const receiver = users.get(data.to);
-      if (receiver) {
-        receiver.emit('endcall');
-      }
-    })
-    .on('disconnectcall', () => {
-      users.remove(id);
-      console.log(id, 'disconnected');
-    });
   });
 };
 

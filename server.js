@@ -9,6 +9,7 @@ const morgan = require("morgan");
 const fs = require("fs");
 require("dotenv").config()
 const { SocketMessaging } = require("./socket/socket.js");
+const { SocketCalling } = require('./socket/calling.js')
 
 const app = express();
 const server = http.createServer(app);
@@ -76,6 +77,7 @@ if (process.env.NODE_ENV === "production") {
 //Socket configuration
 const io = socketIo(server);
 SocketMessaging(io);
+SocketCalling(io);
 
 // Port Configuration
 const port = process.env.PORT || 8080;
