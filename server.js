@@ -13,7 +13,7 @@ const { SocketCalling } = require('./socket/calling.js')
 
 const app = express();
 const server = http.createServer(app);
-app.use(cors());
+app.use(cors({origin: '*'}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -75,7 +75,11 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //Socket configuration
-const io = socketIo(server);
+const io = socketIo(server,{
+  cors: {
+    origin: '*',
+  }
+});
 SocketMessaging(io);
 SocketCalling(io);
 
