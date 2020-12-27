@@ -1,7 +1,7 @@
 It is chat application, built with MERN stack.
 
 Incoming features:-
-1. Video Calling
+1. Video Calling (done)
 2. JWT authentication
 3. Push Notification
 4. File Attachments
