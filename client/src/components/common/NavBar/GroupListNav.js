@@ -42,8 +42,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: "none",
+    fontSize: '36px',
     [theme.breakpoints.up("sm")]: {
-      display: "block",
+      display: "block"
     },
   },
   search: {
@@ -70,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   inputRoot: {
-    color: "inherit",
+    color: "#fff",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -79,12 +80,20 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: "12ch",
+      width: "20vw",
       "&:focus": {
-        width: "20ch",
+        width: "30vw",
       },
     },
   },
+  drawerPaper: {
+    background:'rgba( 255, 255, 255, 0.4 )',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            padding: '10px',
+            borderRadius: '10px',
+            color: '#fff'
+  }
 }));
 
 const GroupListNav = (props) => {
@@ -174,23 +183,23 @@ const GroupListNav = (props) => {
     label: "user name",
     proceedText: "Add",
   };
- 
+
   return (
     <>
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" style={{background: 'transparent', boxShadow: 'none'}}>
           <Toolbar>
             <IconButton
               edge="start"
               className={classes.menuButton}
-              color="inherit"
+              style={{color: '#fff'}}
               aria-label="open drawer"
               onClick={toggleClose}
             >
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              Welcome Prerit
+              Chat Room Lobby
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -212,14 +221,14 @@ const GroupListNav = (props) => {
           variant="persistent"
           anchor="left"
           open={open}
-          // classes={{
-          //   paper: classes.drawerPaper,
-          // }}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
         >
           <div
           // className={classes.drawerHeader}
           >
-            <IconButton onClick={toggleClose}>
+            <IconButton onClick={toggleClose} style={{color: '#fff'}}>
               <ChevronLeftIcon />
             </IconButton>
           </div>
@@ -228,7 +237,7 @@ const GroupListNav = (props) => {
           { props.location.pathname === "/chats"
            &&
             <ListItem button key={1} onClick={() => setOpenCreateGroup(true)}>
-              <ListItemIcon>
+              <ListItemIcon style={{ color: '#fff'}}>
                 <AddCircleIcon />
               </ListItemIcon>
               <ListItemText primary={"Create New Group"} />
@@ -238,7 +247,7 @@ const GroupListNav = (props) => {
           { props.location.pathname !== "/videocall"
            &&
             <ListItem button key={2} onClick={goVideoCall}>
-              <ListItemIcon>
+              <ListItemIcon style={{ color: '#fff'}}>
                 <VideoCallIcon />
               </ListItemIcon>
               <ListItemText primary={"Video Call"} />
@@ -247,19 +256,19 @@ const GroupListNav = (props) => {
 
             { props.location.pathname === "/chat" &&
             <ListItem button key={3} onClick={() => setOpenAddMember(true)}>
-              <ListItemIcon>
+              <ListItemIcon style={{ color: '#fff'}}>
                 <PersonAddIcon />
               </ListItemIcon>
               <ListItemText primary={"Add New Member"} />
             </ListItem>
             }
 
-            
+
           </List>
           <Divider />
           <List>
             <ListItem button key={3}>
-              <ListItemIcon>
+              <ListItemIcon style={{ color: '#fff'}}>
                 <ExitToAppIcon />
               </ListItemIcon>
               <ListItemText primary={"Logout"} />
@@ -287,6 +296,7 @@ const GroupListNav = (props) => {
         type={notification.type}
         show={notification.show}
         msg={notification.msg}
+        
       />
     </>
   );

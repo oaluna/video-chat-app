@@ -41,7 +41,10 @@ const Chat = (props) => {
       <List m={'auto'} >
         {rooms.map((room) => {
           return (
-            <ListItem button divider alignItems="center" key={room._id} onClick={(e) => openChats(e, room._id)} style={{cursor:"pointer"}}>
+            <ListItem button divider alignItems="center" key={room._id} onClick={(e) => openChats(e, room._id)} style={{cursor:"pointer", background: 'rgba( 255, 255, 255, 0.4 )',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            borderRadius: '10px'}}>
               {room.name}
             </ListItem>
           );

@@ -238,12 +238,12 @@ class Video extends Component {
 			minWidth = "300px"
 		}
 		let minHeight = "40%"
-
+    let clipPath = "circle()"
 		let height = String(100 / elms) + "%"
 		let width = ""
 		if(elms === 0 || elms === 1) {
-			width = "100%"
-			height = "100%"
+			width = "75%"
+			height = "75%"
 		} else if (elms === 2) {
 			width = "45%"
 			height = "100%"
@@ -256,13 +256,15 @@ class Video extends Component {
 
 		let videos = main.querySelectorAll("video")
 		for (let a = 0; a < videos.length; ++a) {
-			videos[a].style.minWidth = minWidth
-			videos[a].style.minHeight = minHeight
+			videos[a].style.minWidth = "width"
+			videos[a].style.minHeight = "height"
+			videos[a].style.clipPath = "clip-path"
 			videos[a].style.setProperty("width", width)
 			videos[a].style.setProperty("height", height)
+			videos[a].style.setProperty("clip-path", clipPath)
 		}
 
-		return {minWidth, minHeight, width, height}
+		return {minWidth, minHeight, width, height, clipPath}
 	}
 
 	connectToSocketServer = () => {
@@ -290,7 +292,7 @@ class Video extends Component {
 			socket.on('user-joined', (id, clients) => {
 				clients.forEach((socketListId) => {
 					connections[socketListId] = new RTCPeerConnection(peerConnectionConfig)
-					// Wait for their ice candidate       
+					// Wait for their ice candidate
 					connections[socketListId].onicecandidate = function (event) {
 						if (event.candidate != null) {
 							socket.emit('signal', socketListId, JSON.stringify({ 'ice': event.candidate }))
@@ -300,9 +302,9 @@ class Video extends Component {
 					// Wait for their video stream
 					connections[socketListId].onaddstream = (event) => {
 						// TODO mute button, full screen button
-						let searchVidep = document.querySelector(`[data-socket="${socketListId}"]`)
-						if (searchVidep !== null) { // if i don't do this check it make an empyt square
-							searchVidep.srcObject = event.stream
+						let searchVideo = document.querySelector(`[data-socket="${socketListId}"]`)
+						if (searchVideo !== null) { // if i don't do this check it make an empyt square
+							searchVideo.srcObject = event.stream
 						} else {
 							elms = clients.length
 							let main = document.getElementById('main')
@@ -310,13 +312,13 @@ class Video extends Component {
 
 							let video = document.createElement('video')
 
-							let css = {minWidth: cssMesure.minWidth, minHeight: cssMesure.minHeight, maxHeight: "100%", margin: "10px",
-								borderStyle: "solid", borderColor: "#bdbdbd", objectFit: "fill"}
+							let css = {width: '40%', height: "30%", margin: "5px"}
 							for(let i in css) video.style[i] = css[i]
 
 							video.style.setProperty("width", cssMesure.width)
 							video.style.setProperty("height", cssMesure.height)
 							video.setAttribute('data-socket', socketListId)
+							video.style.setProperty("clip-path", "circle()")
 							video.srcObject = event.stream
 							video.autoplay = true
 							video.playsinline = true
@@ -338,11 +340,11 @@ class Video extends Component {
 				if (id === socketId) {
 					for (let id2 in connections) {
 						if (id2 === socketId) continue
-						
+
 						try {
 							connections[id2].addStream(window.localStream)
 						} catch(e) {}
-			
+
 						connections[id2].createOffer().then((description) => {
 							connections[id2].setLocalDescription(description)
 								.then(() => {
@@ -447,21 +449,28 @@ class Video extends Component {
 			<div>
 				{this.state.askForUsername === true ?
 					<div>
-						<div style={{background: "white", width: "30%", height: "auto", padding: "20px", minWidth: "400px",
+						<div style={{background: 'rgba( 255, 255, 255, 0.4 )',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            borderRadius: '10px', width: "30%", height: "auto", padding: "20px", minWidth: "400px",
 								textAlign: "center", margin: "auto", marginTop: "50px", justifyContent: "center"}}>
 							<p style={{ margin: 0, fontWeight: "bold", paddingRight: "50px" }}>Set your username</p>
-							<Input placeholder="Username" value={this.state.username} onChange={e => this.handleUsername(e)} />
-							<Button letiant="contained" color="primary" onClick={this.connect} style={{ margin: "20px" }}>Connect</Button>
+							<Input style={{color: '#fff'}} placeholder="Username" value={this.state.username} onChange={e => this.handleUsername(e)} />
+							<Button letiant="contained" onClick={this.connect} style={{ background: '#ea4c89', color: '#fff', opacity: '0.75', margin: "20px" }}>Connect</Button>
 						</div>
 
 						<div style={{ justifyContent: "center", textAlign: "center", paddingTop: "40px" }}>
 							<video id="my-video" ref={this.localVideoref} autoPlay muted style={{
-								borderStyle: "solid",borderColor: "#bdbdbd",objectFit: "fill",width: "60%",height: "30%"}}></video>
+								height: "62vh", clipPath: 'circle()'}}></video>
 						</div>
 					</div>
 					:
 					<div>
-						<div className="btn-down" style={{ backgroundColor: "whitesmoke", color: "whitesmoke", textAlign: "center" }}>
+						<div className="btn-down" style={{
+							width: '90vw', background: 'rgba( 255, 255, 255, 0.4 )',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            borderRadius: '10px', color: "whitesmoke", textAlign: "center", marginLeft: '5vw' }}>
 							<IconButton style={{ color: "#424242" }} onClick={this.handleVideo}>
 								{(this.state.video === true) ? <VideocamIcon /> : <VideocamOffIcon />}
 							</IconButton>
@@ -480,16 +489,19 @@ class Video extends Component {
 								</IconButton>
 								: null}
 
-							<Badge badgeContent={this.state.newmessages} max={999} color="secondary" onClick={this.openChat}>
-								<IconButton style={{ color: "#424242" }} onClick={this.openChat}>
+							<Badge style={{position: 'relative', marginTop: '10px'}}badgeContent={this.state.newmessages} max={999} color="secondary" onClick={this.openChat}>
+								<IconButton style={{ position: 'relative', marginTop: '-10px', color: "#424242" }} onClick={this.openChat}>
 									<ChatIcon />
 								</IconButton>
 							</Badge>
 						</div>
 
-						<Modal show={this.state.showModal} onHide={this.closeChat} style={{ zIndex: "999999" }}>
+						<Modal show={this.state.showModal} onHide={this.closeChat} style={{ zIndex: "999999", position: 'relative', background: 'rgba( 255, 255, 255, 0.4 )', border: 'none',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            borderRadius: '10px', width: '24vw', marginLeft: '75vw', marginTop: '-60vh', padding: '15px' }}>
 							<Modal.Header closeButton>
-								<Modal.Title>Chat Room</Modal.Title>
+								<Modal.Title style={{fontSize: '22px', textAlign: 'center'}}>Chat Room</Modal.Title>
 							</Modal.Header>
 							<Modal.Body style={{ overflow: "auto", overflowY: "auto", height: "400px", textAlign: "left" }} >
 								{this.state.messages.length > 0 ? this.state.messages.map((item, index) => (
@@ -499,23 +511,28 @@ class Video extends Component {
 								)) : <p>No message yet</p>}
 							</Modal.Body>
 							<Modal.Footer className="div-send-msg">
-								<Input placeholder="Message" value={this.state.message} onChange={e => this.handleMessage(e)} />
-								<Button letiant="contained" color="primary" onClick={this.sendMessage}>Send</Button>
+								<Input placeholder="Message" value={this.state.message} onChange={e => this.handleMessage(e)} style={{width: '18vw',  background: 'rgba( 255, 255, 255, 0.4 )',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            borderRadius: '10px'}}/>
+								<Button letiant="contained" color="whitesmoke" onClick={this.sendMessage} style={{ background: "lightblue",
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            borderRadius: '10px', margin: '5px'}}>Send</Button>
 							</Modal.Footer>
 						</Modal>
 
 						<div className="container">
 							<div style={{ paddingTop: "20px" }}>
 								<Input value={window.location.href} disable="true"></Input>
-								<Button style={{backgroundColor: "#3f51b5",color: "whitesmoke",marginLeft: "20px",
-									marginTop: "10px",width: "120px",fontSize: "10px"
+								<Button style={{backgroundColor: "rgba(63, 81, 181, 0.55)",color: "whitesmoke",marginLeft: "20px",
+									marginTop: "-17vh", zIndex: 2, width: "120px",fontSize: "10px"
 								}} onClick={this.copyUrl}>Copy invite link</Button>
 							</div>
 
 							<Row id="main" className="flex-container" style={{ margin: 0, padding: 0 }}>
 								<video id="my-video" ref={this.localVideoref} autoPlay muted style={{
-									borderStyle: "solid",borderColor: "#bdbdbd",margin: "10px",objectFit: "fill",
-									width: "100%",height: "100%"}}></video>
+								height: "62vh", clipPath: 'circle()'}}></video>
 							</Row>
 						</div>
 					</div>

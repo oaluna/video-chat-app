@@ -6,14 +6,23 @@
 
 .SenderMessage {
   background-color: #5593c5 !important;
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 3.3px );
+            borderRadius: 10px;
 }
 
 .ReceiverMessage {
   background-color: #CCCCCC !important;
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 3.3px );
+            border-radius: 10px;
 }
 
 .SystemMessage {
   background-color: #ea4c89 !important;
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 3.3px );
+            border-radius: 10px;
 }
 
 .MsgInfo {
@@ -35,7 +44,7 @@
 /* .left-msg .msg-bubble {
     border-bottom-left-radius: 0;
   }
-  
+
   .right-msg {
     flex-direction: row-reverse;
   }

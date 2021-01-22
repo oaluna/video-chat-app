@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import InputField from "../common/InputField";
-import ButtonUser from "../common/button";
-import Box from "@material-ui/core/Box";
-import { withRouter } from "react-router";
-import { getData } from "../../axios/apiCalls.js";
-import { urls } from "../../config/urls.js";
-import { Container } from "@material-ui/core";
-import Notification from "../common/notifications.jsx";
-import Loader from "../common/loader";
+import InputField from '../common/InputField';
+import ButtonUser from '../common/button';
+import Box from '@material-ui/core/Box';
+import { withRouter } from 'react-router';
+import { getData } from '../../axios/apiCalls.js';
+import { urls } from '../../config/urls.js';
+import { Container } from '@material-ui/core';
+import Notification from '../common/notifications.jsx';
+import Loader from '../common/loader';
 
 const defaultNotification = {
-  msg: "",
+  msg: '',
   show: false,
-  type: "e",
+  type: 'e'
 };
 
 const Login = (props) => {
@@ -21,7 +21,7 @@ const Login = (props) => {
     let checkValid = true;
 
     if (rules.required === true) {
-      checkValid = value.trim() !== "" && checkValid;
+      checkValid = value.trim() !== '' && checkValid;
     }
 
     if (rules.length === true) {
@@ -33,11 +33,11 @@ const Login = (props) => {
 
   const inputChangeHandler = (e, id) => {
     const updatedLoginForm = {
-      ...loginForm,
+      ...loginForm
     };
 
     const updatedFormElement = {
-      ...updatedLoginForm[id],
+      ...updatedLoginForm[id]
     };
 
     updatedFormElement.value = e.target.value;
@@ -59,9 +59,9 @@ const Login = (props) => {
   const buttonHandler = async (e, value) => {
     e.preventDefault();
 
-    if (value === "register") {
-      props.history.push("/register");
-    } else if (value === "login") {
+    if (value === 'register') {
+      props.history.push('/register');
+    } else if (value === 'login') {
       setLoading(true);
       const formData = {};
       for (let formelements in loginForm) {
@@ -74,15 +74,15 @@ const Login = (props) => {
           props.history.push(`/chats?id=${result.data.userid}`);
         } else if (result.data.auth === false) {
           setNotification({
-            msg: "Incorrect credentials",
+            msg: 'Incorrect credentials',
             show: true,
-            type: "e",
+            type: 'e'
           });
-        } else if (result.data === "User not found") {
+        } else if (result.data === 'User not found') {
           setNotification({
             msg: result.data,
             show: true,
-            type: "i",
+            type: 'i'
           });
         }
       }
@@ -91,30 +91,30 @@ const Login = (props) => {
 
   const initalLoginForm = {
     username: {
-      elementType: "input",
+      elementType: 'input',
       elementConfig: {
-        type: "text",
-        placeholder: "your username",
+        type: 'text',
+        placeholder: 'Enter your username'
       },
-      value: "",
+      value: '',
       validation: {
-        required: true,
+        required: true
       },
-      valid: false,
+      valid: false
     },
     password: {
-      elementType: "input",
+      elementType: 'input',
       elementConfig: {
-        type: "password",
-        placeholder: "your password",
+        type: 'password',
+        placeholder: 'Enter your password'
       },
-      value: "",
+      value: '',
       validation: {
         required: true,
-        length: true,
+        length: true
       },
-      valid: false,
-    },
+      valid: false
+    }
   };
 
   //States
@@ -127,46 +127,63 @@ const Login = (props) => {
   for (let key in loginForm) {
     loginFormArray.push({
       id: key,
-      config: loginForm[key],
+      config: loginForm[key]
     });
   }
 
   return (
     <Container>
       <div
-        style={{ display: "flex", flexFlow: "column", alignItems: "center" }}
-      >
-        <h2>Login</h2>
-        <Box>
-          {loginFormArray.map((element) => {
-            return (
-              <InputField
-                key={element.id}
-                elementConfig={element.config.elementConfig}
-                value={element.config.value}
-                invalid={!element.config.valid}
-                shouldBeChecked={element.config.validation}
-                valueChange={(e) => inputChangeHandler(e, element.id)}
-              />
-            );
-          })}
-        </Box>
-        <Box
-          p={2}
-          style={{ display: "flex", flexFlow: "column", alignItems: "center" }}
-        >
-          <ButtonUser
-            text={"Login"}
-            color="primary"
-            buttonHandler={(e) => buttonHandler(e, "login")}
-            disabled={!formValid}
-          />
-          <p>OR</p>
-          <ButtonUser
-            text={"Register"}
-            buttonHandler={(e) => buttonHandler(e, "register")}
-          />
-        </Box>
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}>
+        <h1>Social Media Demo + Video Chat</h1>
+        <div
+          style={{
+            textAlign: 'center',
+            width: '40vw',
+            background: 'rgba( 255, 255, 255, 0.4 )',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            borderRadius: '10px'
+          }}>
+          <h2>Members Login</h2>
+          <Box m={1}>
+            {loginFormArray.map((element) => {
+              return (
+                <InputField
+                  key={element.id}
+                  elementConfig={element.config.elementConfig}
+                  value={element.config.value}
+                  invalid={!element.config.valid}
+                  shouldBeChecked={element.config.validation}
+                  valueChange={(e) => inputChangeHandler(e, element.id)}
+                />
+              );
+            })}
+          </Box>
+          <Box
+            p={2}
+            style={{
+              display: 'flex',
+              flexFlow: 'column',
+              alignItems: 'center'
+            }}>
+            <ButtonUser
+              text={'Login'}
+              color='primary'
+              buttonHandler={(e) => buttonHandler(e, 'login')}
+              disabled={!formValid}
+            />
+            <p>OR</p>
+            <ButtonUser
+              text={'Register'}
+              buttonHandler={(e) => buttonHandler(e, 'register')}
+            />
+          </Box>
+        </div>
       </div>
       <Notification
         type={notfication.type}
@@ -174,6 +191,9 @@ const Login = (props) => {
         msg={notfication.msg}
       />
       {loading ? <Loader /> : null}
+      <footer style={{ textAlign: 'center', marginTop: '20vh' }}>
+        &copy; 2021 by Oscar Armando Luna
+      </footer>
     </Container>
   );
 };

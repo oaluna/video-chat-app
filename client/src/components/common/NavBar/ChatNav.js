@@ -20,6 +20,7 @@ const defaultNotification = {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -34,7 +35,10 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    background:'rgba( 255, 255, 255, 0.4 )',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            padding: '10px',
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
@@ -83,7 +87,7 @@ const ChatNav = () => {
             <IconButton
               edge="start"
               className={classes.menuButton}
-              color="inherit"
+              style={{color: '#fff'}}
               aria-label="open drawer"
             >
               <MenuIcon />
@@ -107,7 +111,7 @@ const ChatNav = () => {
           </Toolbar>
         </AppBar>
       </div>
-      {/* <FormDialog
+     <FormDialog
         open={openCreateGroup}
         setOpen={setOpenCreateGroup}
         dialogData={dialogData}
@@ -116,10 +120,11 @@ const ChatNav = () => {
         clickFunc={createGroup}
       />
       <Notification
+      style={{marginTop: '5px'}}
         type={notification.type}
         show={notification.show}
         msg={notification.msg}
-      /> */}
+      />
     </>
   );
 };

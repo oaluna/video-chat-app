@@ -12,7 +12,7 @@ const InputField = (props) => {
         autoFocus={true}
           {...props.elementConfig}
           value={props.value}
-          onChange={props.valueChange}
+          onChange={props.valueChange} style={{padding: '5px', width: '20vw', color: '#fff', }}
         />
       );
       break;
@@ -38,7 +38,10 @@ const InputField = (props) => {
         <TextField label={props.elementConfig.name} variant="outlined"
           {...props.elementConfig}
           value={props.value}
-          onChange={props.valueChange}
+          onChange={props.valueChange} style={{ marginTop: '5px', width: '30vw', color: '#fff', background: 'rgba( 255, 255, 255, 0.4 )',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            borderRadius: '10px'}}
         />
       );
   }

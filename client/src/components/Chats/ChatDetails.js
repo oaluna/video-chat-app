@@ -159,34 +159,37 @@ const ChatDetails = (props) => {
         <Container
           maxWidth={"lg"}
           style={{
-            backgroundColor: "#f5f5f5",
+            background: 'rgba( 255, 255, 255, 0.4 )',
+            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+            backdropFilter: 'blur( 3.3px )',
+            borderRadius: '10px',
             display: "flex",
             flexDirection: "column",
             maxHeight: "80vh",
             overflowY: "scroll",
           }}
         >
-          <MessageBox messages={messages} user={userData} />
+          <MessageBox messages={messages} user={userData}/>
           <div ref={messagesEndRef} />
         </Container>
-        <form onSubmit={(e) => messageSent(e)} style={{ height: "10vh" }}>
+        <form onSubmit={(e) => messageSent(e)} style={{ height: "15vh" }}>
           <Grid container>
             <Grid item md={11}>
-              <InputField
+              <InputField style={{color: "#fff"}}
                 key={Object.keys(messageInput)[0]}
                 elementConfig={messageInput.message.elementConfig}
                 value={messageInput.message.value}
                 shouldBeChecked={messageInput.message.validation}
                 valueChange={(e) => inputChangeHandler(e, "message")}
+
               />
             </Grid>
             <Grid item md>
               <button
-                style={{ height: "100%", width: "100%" }}
+                style={{ height: "100%", width: "100%", marginTop: '5px', color: '#fff', alignItems: 'center' }}
                 type="submit"
                 disabled={!messageInput.message.valid}
-              >
-                <SendOutlinedIcon />
+              ><SendOutlinedIcon />
               </button>
             </Grid>
           </Grid>
