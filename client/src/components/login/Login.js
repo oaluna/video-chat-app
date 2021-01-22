@@ -191,9 +191,7 @@ const Login = (props) => {
         msg={notfication.msg}
       />
       {loading ? <Loader /> : null}
-      <footer style={{ textAlign: 'center', marginTop: '20vh' }}>
-        &copy; 2021 by Oscar Armando Luna
-      </footer>
+      
     </Container>
   );
 };
