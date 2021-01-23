@@ -34,15 +34,18 @@ const defaultNotification = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
+
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
+  
     display: "none",
     fontSize: '36px',
+    fontWeight: 400,
     [theme.breakpoints.up("sm")]: {
       display: "block"
     },
@@ -159,7 +162,7 @@ const GroupListNav = (props) => {
       setOpenAddMember(false);
       setMemberName("");
       setNotification({
-        msg: "Member Added Successfully",
+        msg: "Group member successfully added!",
         show: true,
         type: "s",
       });
@@ -179,7 +182,7 @@ const GroupListNav = (props) => {
 
   const addMemberData = {
     title: "Add New Member",
-    msg: "Enter user name to add it to the group",
+    msg: "Enter user name to add a user to the group",
     label: "user name",
     proceedText: "Add",
   };
@@ -192,7 +195,7 @@ const GroupListNav = (props) => {
             <IconButton
               edge="start"
               className={classes.menuButton}
-              style={{color: '#fff'}}
+
               aria-label="open drawer"
               onClick={toggleClose}
             >
@@ -228,7 +231,7 @@ const GroupListNav = (props) => {
           <div
           // className={classes.drawerHeader}
           >
-            <IconButton onClick={toggleClose} style={{color: '#fff'}}>
+            <IconButton onClick={toggleClose}>
               <ChevronLeftIcon />
             </IconButton>
           </div>
@@ -237,7 +240,7 @@ const GroupListNav = (props) => {
           { props.location.pathname === "/chats"
            &&
             <ListItem button key={1} onClick={() => setOpenCreateGroup(true)}>
-              <ListItemIcon style={{ color: '#fff'}}>
+              <ListItemIcon>
                 <AddCircleIcon />
               </ListItemIcon>
               <ListItemText primary={"Create New Group"} />
@@ -247,7 +250,7 @@ const GroupListNav = (props) => {
           { props.location.pathname !== "/videocall"
            &&
             <ListItem button key={2} onClick={goVideoCall}>
-              <ListItemIcon style={{ color: '#fff'}}>
+              <ListItemIcon>
                 <VideoCallIcon />
               </ListItemIcon>
               <ListItemText primary={"Video Call"} />
@@ -256,7 +259,7 @@ const GroupListNav = (props) => {
 
             { props.location.pathname === "/chat" &&
             <ListItem button key={3} onClick={() => setOpenAddMember(true)}>
-              <ListItemIcon style={{ color: '#fff'}}>
+              <ListItemIcon>
                 <PersonAddIcon />
               </ListItemIcon>
               <ListItemText primary={"Add New Member"} />
@@ -268,7 +271,7 @@ const GroupListNav = (props) => {
           <Divider />
           <List>
             <ListItem button key={3}>
-              <ListItemIcon style={{ color: '#fff'}}>
+              <ListItemIcon>
                 <ExitToAppIcon />
               </ListItemIcon>
               <ListItemText primary={"Logout"} />
@@ -296,7 +299,7 @@ const GroupListNav = (props) => {
         type={notification.type}
         show={notification.show}
         msg={notification.msg}
-        
+
       />
     </>
   );

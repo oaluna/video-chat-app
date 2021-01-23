@@ -6,10 +6,11 @@ import Login from "./components/login/Login";
 import ChatDetails from "./components/Chats/ChatDetails";
 import Register from "./components/register/Register";
 import VideoCall from "./components/VideoCall/VideoCall";
-
+import Background from './components/common/background/Background'
 function App() {
   return (
     <div>
+    <Background />
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Login} />

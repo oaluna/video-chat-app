@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Corbel', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   background-image: url(https://images.pexels.com/photos/2156881/pexels-photo-2156881.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
   background-size: cover;
   color: #fff;
@@ -9,6 +9,5 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: sans-serif;
 }

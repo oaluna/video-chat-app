@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import queryString from "query-string";
+import React, { useState, useEffect } from 'react';
+import queryString from 'query-string';
 
-import { getData, postData } from "../../axios/apiCalls.js";
-import { urls } from "../../config/urls.js";
-import ButtonUser from "../common/button.jsx";
-import Modal from "../common/modal.jsx";
-import GroupListNav from "../common/NavBar/GroupListNav"
-import { CircularProgress,Box } from '@material-ui/core';
+import { getData, postData } from '../../axios/apiCalls.js';
+import { urls } from '../../config/urls.js';
+import ButtonUser from '../common/button.jsx';
+import Modal from '../common/modal.jsx';
+import GroupListNav from '../common/NavBar/GroupListNav';
+import { CircularProgress, Box } from '@material-ui/core';
 
 import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
@@ -32,33 +32,55 @@ const Chat = (props) => {
     props.history.push(`/chat${props.location.search}&room=${roomid}`);
   };
 
-
-  if(rooms.length!==0){
-  return (
-    <>
-    <GroupListNav getRoomsList={(id)=>getRoomsList(id)}/>
-    <Box>
-      <List m={'auto'} >
-        {rooms.map((room) => {
-          return (
-            <ListItem button divider alignItems="center" key={room._id} onClick={(e) => openChats(e, room._id)} style={{cursor:"pointer", background: 'rgba( 255, 255, 255, 0.4 )',
-            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
-            backdropFilter: 'blur( 3.3px )',
-            borderRadius: '10px'}}>
-              {room.name}
-            </ListItem>
-          );
-        })}
-        </List>
-    </Box>
-    </>
-  );
-}else{
-  return (<Box>
-    <GroupListNav getRoomsList={(id)=>getRoomsList(id)}/>
-    <CircularProgress style={{margin:"0 auto"}}/>
-  </Box>)
-}
+  if (rooms.length !== 0) {
+    return (
+      <>
+        <GroupListNav getRoomsList={(id) => getRoomsList(id)} />
+          <h1
+            style={{
+              position: 'relative',
+              fontSize: '36px',
+              fontWeight: 400,
+              textAlign: 'center'
+              }}>
+            Select a chat room from the list below, or create one in the menu.
+          </h1>
+        <Box>
+          <List m={'auto'}>
+            {rooms.map((room) => {
+              return (
+                <ListItem
+                  button
+                  divider
+                  alignItems='center'
+                  key={room._id}
+                  onClick={(e) => openChats(e, room._id)}
+                  style={{
+                    width: '80vw',
+                    margin: 'auto',
+                    cursor: 'pointer',
+                    background: 'rgba( 255, 255, 255, 0.4 )',
+                    boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+                    backdropFilter: 'blur( 3.3px )',
+                    borderRadius: '10px',
+                    alignItems: 'center'
+                  }}>
+                  {room.name}
+                </ListItem>
+              );
+            })}
+          </List>
+        </Box>
+      </>
+    );
+  } else {
+    return (
+      <Box>
+        <GroupListNav getRoomsList={(id) => getRoomsList(id)} />
+        <CircularProgress style={{ margin: '0 auto' }} />
+      </Box>
+    );
+  }
 };
 
 export default Chat;

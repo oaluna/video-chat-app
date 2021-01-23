@@ -137,9 +137,18 @@ const Login = (props) => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          marginTop: '20vh'
         }}>
-        <h1>Social Media Demo + Video Chat</h1>
+        <h1
+          style={{
+            zIndex: 1,
+            marginTop: '0vh',
+            mixBlendMode: 'color-burn',
+            color: '#0a2540'
+          }}>
+          Social Media Demo + Video Chat
+        </h1>
         <div
           style={{
             textAlign: 'center',
@@ -191,7 +200,6 @@ const Login = (props) => {
         msg={notfication.msg}
       />
       {loading ? <Loader /> : null}
-      
     </Container>
   );
 };
