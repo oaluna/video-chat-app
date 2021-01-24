@@ -1,37 +1,35 @@
-import React, { useState, useEffect,useRef } from "react";
-import io from "socket.io-client";
-import queryString from "query-string";
+import React, { useState, useEffect, useRef } from 'react';
+import io from 'socket.io-client';
+import queryString from 'query-string';
 
-import { ENDPOINT } from "../../config/config.js";
-import { getData, postData } from "../../axios/apiCalls.js";
-import { urls } from "../../config/urls.js";
+import { ENDPOINT } from '../../config/config.js';
+import { getData, postData } from '../../axios/apiCalls.js';
+import { urls } from '../../config/urls.js';
 
-import SendOutlinedIcon from "@material-ui/icons/SendOutlined";
-import { Container, Grid } from "@material-ui/core";
+import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
+import { Container, Grid } from '@material-ui/core';
 
-import InputField from "../common/InputField.jsx";
-import MessageBox from "../common/messageBox.jsx";
-import Modal from "../common/modal.jsx";
-import ButtonUser from "../common/button.jsx";
-import GroupListNav from "../common/NavBar/GroupListNav";
+import InputField from '../common/InputField.jsx';
+import MessageBox from '../common/messageBox.jsx';
+import GroupListNav from '../common/NavBar/GroupListNav';
 
 let socket;
 
 const ChatDetails = (props) => {
   const initalMessageInput = {
     message: {
-      elementType: "input",
+      elementType: 'input',
       elementConfig: {
-        type: "text",
-        placeholder: "your message...",
-        fullWidth: true,
+        type: 'text',
+        placeholder: 'your message...',
+        fullWidth: true
       },
-      value: "",
+      value: '',
       validation: {
-        required: true,
+        required: true
       },
-      valid: false,
-    },
+      valid: false
+    }
   };
 
   //State
@@ -57,7 +55,7 @@ const ChatDetails = (props) => {
             group: message.group,
             message: message.message,
             sender: message.sender,
-            sendername: message.sendername,
+            sendername: message.sendername
           };
           oldMessagesArray.push(data);
         }
@@ -70,7 +68,7 @@ const ChatDetails = (props) => {
 
   const messageSent = (e) => {
     e.preventDefault();
-    let username = "";
+    let username = '';
     if (userData.name.lastname) {
       username = `${userData.name.firstname} ${userData.name.lastname}`;
     } else {
@@ -82,9 +80,9 @@ const ChatDetails = (props) => {
       group: room,
       message: messageInput.message.value,
       sendername: username,
-      date: new Date(),
+      date: new Date()
     };
-    socket.emit("sendMessage", data, () => {
+    socket.emit('sendMessage', data, () => {
       setMessageInput(initalMessageInput);
     });
   };
@@ -93,7 +91,7 @@ const ChatDetails = (props) => {
     let checkValid = true;
 
     if (rules.required === true) {
-      checkValid = value.trim() !== "" && checkValid;
+      checkValid = value.trim() !== '' && checkValid;
     }
 
     return checkValid;
@@ -103,7 +101,7 @@ const ChatDetails = (props) => {
     e.preventDefault();
 
     const updatedMessageInput = {
-      ...messageInput,
+      ...messageInput
     };
 
     updatedMessageInput[id].value = e.target.value;
@@ -131,12 +129,12 @@ const ChatDetails = (props) => {
 
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
     if (userData && room) {
-      socket.emit("join", { name: userData, room: room }, (err) => {
+      socket.emit('join', { name: userData, room: room }, (err) => {
         if (err) {
           alert(err);
         }
@@ -145,7 +143,7 @@ const ChatDetails = (props) => {
   }, [userData, room]);
 
   useEffect(() => {
-    socket.on("message", (data) => {
+    socket.on('message', (data) => {
       setMessages((messages) => [...messages, data]);
     });
   }, []);
@@ -157,43 +155,50 @@ const ChatDetails = (props) => {
       <GroupListNav />
       <Container>
         <Container
-          maxWidth={"lg"}
+          maxWidth={'lg'}
           style={{
             background: 'rgba( 255, 255, 255, 0.4 )',
             boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
             backdropFilter: 'blur( 3.3px )',
             borderRadius: '10px',
-            display: "flex",
-            flexDirection: "column",
-            maxHeight: "80vh",
-            overflowY: "scroll",
-          }}
-        >
-          <MessageBox messages={messages} user={userData}/>
+            display: 'flex',
+            flexDirection: 'column',
+            maxHeight: '80vh',
+            overflowY: 'scroll'
+          }}>
+          <MessageBox messages={messages} user={userData} />
           <div ref={messagesEndRef} />
         </Container>
-        <form onSubmit={(e) => messageSent(e)} style={{ height: "15vh" }}>
+        <form onSubmit={(e) => messageSent(e)} style={{ height: '15vh' }}>
           <Grid container>
             <Grid item md={11}>
-              <InputField style={{color: "#fff"}}
+              <InputField
+                style={{ color: '#fff' }}
                 key={Object.keys(messageInput)[0]}
                 elementConfig={messageInput.message.elementConfig}
                 value={messageInput.message.value}
                 shouldBeChecked={messageInput.message.validation}
-                valueChange={(e) => inputChangeHandler(e, "message")}
-
+                valueChange={(e) => inputChangeHandler(e, 'message')}
               />
             </Grid>
             <Grid item md>
               <button
-                style={{ height: "100%", width: "100%", marginTop: '5px', color: '#fff', alignItems: 'center' }}
-                type="submit"
-                disabled={!messageInput.message.valid}
-              ><SendOutlinedIcon />
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  marginTop: '5px',
+                  alignItems: 'center',
+                  borderRadius: '50px',
+                  border: '0px'
+                }}
+                type='submit'
+                disabled={!messageInput.message.valid}>
+                <SendOutlinedIcon />
               </button>
             </Grid>
           </Grid>
         </form>
+
       </Container>
     </>
   );

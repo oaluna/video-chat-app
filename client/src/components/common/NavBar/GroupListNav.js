@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-  
+fontFamily: 'Montserrat',
     display: "none",
     fontSize: '36px',
     fontWeight: 400,
@@ -202,7 +202,7 @@ const GroupListNav = (props) => {
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              Chat Room Lobby
+              Social Media Demo + Video Chat
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>

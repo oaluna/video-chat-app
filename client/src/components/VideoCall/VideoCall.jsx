@@ -682,15 +682,16 @@ class Video extends Component {
               onHide={this.closeChat}
               style={{
                 zIndex: '999999',
-                position: 'relative',
+                position: 'absolute',
                 background: 'rgba( 255, 255, 255, 0.4 )',
                 border: 'none',
                 boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
                 backdropFilter: 'blur( 3.3px )',
                 borderRadius: '10px',
                 width: '24vw',
-                marginLeft: '75vw',
-                marginTop: '-60vh',
+                height: '100vh',
+                left: '75vw',
+                top: '0vh',
                 padding: '15px'
               }}>
               <Modal.Header closeButton>
@@ -723,6 +724,7 @@ class Video extends Component {
                   value={this.state.message}
                   onChange={(e) => this.handleMessage(e)}
                   style={{
+                    marginTop: '15vh',
                     width: '18vw',
                     background: 'rgba( 255, 255, 255, 0.4 )',
                     boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
@@ -738,7 +740,7 @@ class Video extends Component {
                     background: 'lightblue',
                     boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
                     backdropFilter: 'blur( 3.3px )',
-                    borderRadius: '10px',
+                    borderRadius: '25px',
                     margin: '5px'
                   }}>
                   Send
@@ -748,12 +750,12 @@ class Video extends Component {
 
             <div className='container'>
               <div style={{ paddingTop: '20px' }}>
-                <Input value={window.location.href} disable='true'></Input>
+
                 <Button
                   style={{
                     backgroundColor: 'rgba(63, 81, 181, 0.55)',
                     color: 'whitesmoke',
-                    marginLeft: '20px',
+                    marginLeft: '20vw',
                     marginTop: '-17vh',
                     zIndex: 2,
                     width: '120px',
