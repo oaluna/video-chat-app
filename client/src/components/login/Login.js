@@ -145,7 +145,7 @@ const Login = (props) => {
         <h1
           style={{
             zIndex: 1,
-            marginTop: '0vh',
+            marginTop: '-5vh',
             fontSize: '48px',
 
           }}>
@@ -172,7 +172,7 @@ const Login = (props) => {
             marginLeft: '45vw',
             textAlign: 'center',
             width: '33vw',
-            marginTop: '10vh',
+            marginTop: '15vh',
             background: 'rgba( 255, 255, 255, 0.4 )',
             boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
             backdropFilter: 'blur( 3.3px )',
