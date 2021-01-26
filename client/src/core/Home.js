@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     left: '5vw',
     top: '20vh',
-width: '45vw',
-height: '70vh',
+    width: '45vw',
+    height: '70vh',
     background: 'rgba( 255, 255, 255, 0.31 )',
     boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
     backdropFilter: 'blur( 3.3px )',
@@ -30,15 +30,15 @@ height: '70vh',
     padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px ${theme.spacing(
       2
     )}px`,
-    color: theme.palette.primary
+
   },
   listItem: {
-         background: 'rgba( 255, 255, 255, 0.31 )',
+    background: 'rgba( 255, 255, 255, 0.31 )',
     boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
     backdropFilter: 'blur( 3.3px )',
     borderRadius: '10px',
     margin: theme.spacing(1)
-   }
+  }
 }));
 
 export default function Home(props) {
@@ -67,27 +67,31 @@ export default function Home(props) {
     return (
       <>
         <GroupListNav getRoomsList={(id) => getRoomsList(id)} />
-<Card className={classes.card}>
-        <Typography
-          variant='h4'
-          component='p'
-          className={classes.title}
-          style={{
+        <Card className={classes.card}>
+          <Typography
+            variant='h4'
+            component='p'
+            className={classes.title}
+            style={{
+              textAlign: 'center',
 
-            textAlign: 'center',
 
-            color: theme.palette.primary.contrastText
-          }}>
-          Select a chat room from the list below, or create a new one in the
-          Menu
-        </Typography>
-        <Box>
-          <List m={5} style={{ justifyContent: 'left', width: 'auto', margin: theme.spacing(2)}}>
-            {rooms.map((room) => {
-              return (
-
+            }}>
+            Select a chat room from the list below, or create a new one in the
+            Menu
+          </Typography>
+          <Box>
+            <List
+              m={5}
+              style={{
+                justifyContent: 'left',
+                width: 'auto',
+                margin: theme.spacing(2)
+              }}>
+              {rooms.map((room) => {
+                return (
                   <ListItem
-                  m={5}
+                    m={5}
                     className={classes.listItem}
                     button
                     divider
@@ -96,14 +100,21 @@ export default function Home(props) {
                     onClick={(e) => openChats(e, room._id)}>
                     {room.name}
                   </ListItem>
-
-              );
-            })}
-          </List>
-
-        </Box>
+                );
+              })}
+            </List>
+          </Box>
         </Card>
-<img src="images/vector-creator-3.png" alt="users chatting all over the world" style={{position: 'absolute', top: '10vh', left: '40vw', zIndex: -1, filter: 'brightness(0.8)' }}/>
+        <img
+          src='images/vector-creator-3.png'
+          alt='users chatting all over the world'
+          style={{
+            position: 'absolute',
+            top: '10vh',
+            left: '40vw',
+            zIndex: -1,
+          }}
+        />
       </>
     );
   } else {

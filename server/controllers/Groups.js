@@ -1,5 +1,5 @@
-const Group = require("../models/Groups.js");
-const User = require("../models/Users.js");
+const Group = require("../models/Groups");
+const User = require("../models/Users");
 
 const getAllGroups = (req, res) => {
   Group.find()

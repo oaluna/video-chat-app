@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {getMessagesByGroup,getAllGroupMessages} =require("../controllers/GroupMessages.js");
+const {getMessagesByGroup,getAllGroupMessages} =require("../controllers/GroupMessages");
 
 router.get('/',getAllGroupMessages)
 

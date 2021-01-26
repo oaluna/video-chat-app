@@ -36,7 +36,7 @@ const theme = createMuiTheme({
     },
     openTitle: '#06182C',
     protectedTitle: teal['400'],
-    type: 'light'
+    type: 'dark'
   },
   overrides: {
     MuiButton: {
@@ -45,7 +45,7 @@ const theme = createMuiTheme({
       backdropFilter: 'blur( 3.3px )',
       borderRadius: '10px'
     },
-   
+
 
   }
 });

@@ -8,8 +8,8 @@ const socketIo = require('socket.io');
 const morgan = require('morgan');
 const fs = require('fs');
 require('dotenv').config();
-const { SocketMessaging } = require('./socket/socket.js');
-const { SocketCalling } = require('./socket/calling.js');
+const { SocketMessaging } = require('../socket/socket.js');
+const { SocketCalling } = require('../socket/calling.js');
 
 const app = express();
 const server = http.createServer(app);

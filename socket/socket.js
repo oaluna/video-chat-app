@@ -1,4 +1,4 @@
-const {addNewMessage}=require("../controllers/GroupMessages.js")
+const {addNewMessage}=require("../server/controllers/GroupMessages.js")
 
  const SocketMessaging = (io) => {
   io.on("connection", (socket) => {

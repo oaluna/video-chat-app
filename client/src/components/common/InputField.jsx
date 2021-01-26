@@ -14,7 +14,8 @@ const InputField = (props) => {
           {...props.elementConfig}
           value={props.value}
           onChange={props.valueChange}
-          style={{ padding: '5px', width: '20vw' }}
+          style={{  width: '20vw',
+          border: 0 }}
         />
       );
       break;
@@ -43,13 +44,14 @@ const InputField = (props) => {
           value={props.value}
           onChange={props.valueChange}
           style={{
-            marginTop: '5px',
+            marginTop: '15px',
+            padding: 0,
             width: '30vw',
-            background: 'rgba( 255, 255, 255, 0.4 )',
+            backgroundColor: 'rgba( 255, 255, 255, 0.31 )',
             boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
             backdropFilter: 'blur( 3.3px )',
-            borderRadius: '10px'
-          }}
+            border: '0px'
+                   }}
         />
       );
   }

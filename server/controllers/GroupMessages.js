@@ -1,7 +1,7 @@
 const GroupMessages = require("../models/GroupMessages.js");
 const Group = require("../models/Groups.js");
 const User = require("../models/Users.js");
-const { logger } = require("../utils/winston.js");
+const { logger } = require("../../utils/winston.js");
 
 const addNewMessage = async (data) => {
   const sender = await User.findById(data.sender);

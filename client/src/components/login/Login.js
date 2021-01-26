@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import theme from '../../theme'
 import InputField from '../common/InputField';
 import ButtonUser from '../common/button';
 import Box from '@material-ui/core/Box';
@@ -9,7 +9,9 @@ import { urls } from '../../config/urls.js';
 import { Container } from '@material-ui/core';
 import Notification from '../common/notifications.jsx';
 import Loader from '../common/loader';
-
+import auth from '../../auth/auth-helper'
+import { Redirect } from 'react-router-dom'
+import { signin } from '../../auth/api-auth.js'
 const defaultNotification = {
   msg: '',
   show: false,
@@ -144,28 +146,27 @@ const Login = (props) => {
           style={{
             zIndex: 1,
             marginTop: '0vh',
-            mixBlendMode: 'color-burn',
             fontSize: '48px',
-            color: '#0a2540'
+
           }}>
           Social Media Demo + Video Chat
         </h1>
         <label htmlFor="img" style={{
           position: 'absolute',
-          fontSize: '48px',
-          fontWeight: 700,
+          fontSize: '24px',
+          fontWeight: 500,
           width: '35vw',
-          marginTop: '20vh',
-          marginLeft: '-35vw',
-          textAlign: 'left'
+          marginTop: '10vh',
+          marginLeft: '45vw',
+          textAlign: 'center',
+
         }}>Share a chatroom or a conference call just by hitting 'Share'.</label>
         <img src="images/vector-creator-4.png" alt="User checking her messages" style={{
           position: 'absolute',
           zIndex: -1,
-          top: '-15vh',
+          top: '-14vh',
           left: '0vw',
-          filter: 'brightness(0.4)',
-          transform: 'scale(0.8, 0.8) rotateY(180deg)'}}/>
+          transform: 'scale(0.75, 0.75)'}}/>
         <div
           style={{
             marginLeft: '45vw',
@@ -177,11 +178,12 @@ const Login = (props) => {
             backdropFilter: 'blur( 3.3px )',
             borderRadius: '10px'
           }}>
-          <h2 style={{fontWeight: 400}}>Members Login</h2>
-          <Box m={1}>
+          <h2 style={{ fontWeight: 400}}>Members Login</h2>
+          <Box m={2}>
             {loginFormArray.map((element) => {
               return (
                 <InputField
+
                   key={element.id}
                   elementConfig={element.config.elementConfig}
                   value={element.config.value}
@@ -201,7 +203,7 @@ const Login = (props) => {
             }}>
             <ButtonUser
               text={'Login'}
-              color='primary'
+
               buttonHandler={(e) => buttonHandler(e, 'login')}
               disabled={!formValid}
             />

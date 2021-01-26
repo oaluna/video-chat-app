@@ -16,6 +16,7 @@ const MessageBox = (props) => {
               padding: "2%",
               margin: "1% 0",
               alignSelf: "flex-end",
+              borderRadius: '45px 45px 0px 45px'
             }}
             autoFocus
           >
@@ -60,6 +61,7 @@ const MessageBox = (props) => {
               padding: "1%",
               margin: "2% 0",
               alignSelf: "flex-start",
+              borderRadius: '45px 45px 45px 0px'
             }}
             autoFocus
           >

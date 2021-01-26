@@ -2,5 +2,5 @@
 const ENDPOINT="https://chat-prerit.herokuapp.com/"
 
 module.exports={
-    ENDPOINT,
+    ENDPOINT
 }
