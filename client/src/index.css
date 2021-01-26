@@ -1,11 +1,13 @@
 body {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   overflow-x: hidden;
   margin: 0;
   font-family: 'Montserrat', sans-serif;
-  background-image: url(https://images.pexels.com/photos/2156881/pexels-photo-2156881.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
-  background-size: cover;
+
+background-image: linear-gradient(to left, #cfc7f8 0%, #ebbba7 100%);/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
   color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

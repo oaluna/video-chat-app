@@ -315,8 +315,8 @@ class Video extends Component {
     let height = String(100 / elms) + '%';
     let width = '';
     if (elms === 0 || elms === 1) {
-      width = '75%';
-      height = '75%';
+      width = '70%';
+      height = '70%';
     } else if (elms === 2) {
       width = '45%';
       height = '100%';
@@ -380,7 +380,7 @@ class Video extends Component {
 
           // Wait for their video stream
           connections[socketListId].onaddstream = (event) => {
-            // TODO mute button, full screen button
+            
             let searchVideo = document.querySelector(
               `[data-socket="${socketListId}"]`
             );
@@ -783,6 +783,7 @@ class Video extends Component {
             </div>
           </div>
         )}
+        <img src="images/vector-creator.png" alt="chatting all over the world" style={{ position: "absolute", zIndex: -1, top: '0vh', left: '48vw', filter: 'brightness(0.4)', transform: 'scale(0.7, 0.7)'}}/>
       </div>
     );
   }

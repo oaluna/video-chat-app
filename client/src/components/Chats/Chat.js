@@ -11,6 +11,9 @@ import { CircularProgress, Box } from '@material-ui/core';
 import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
 
+
+
+
 const Chat = (props) => {
   const [rooms, setRooms] = useState([]);
 
@@ -56,11 +59,11 @@ const Chat = (props) => {
                   key={room._id}
                   onClick={(e) => openChats(e, room._id)}
                   style={{
-                    width: '80vw',
+                    width: '60vw',
                     margin: 'auto',
                     cursor: 'pointer',
-                    background: 'rgba( 255, 255, 255, 0.4 )',
-                    boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+                    background: 'rgba( 255, 255, 255, 0.31 )',
+                    boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.33 )',
                     backdropFilter: 'blur( 3.3px )',
                     borderRadius: '10px',
                     alignItems: 'center'

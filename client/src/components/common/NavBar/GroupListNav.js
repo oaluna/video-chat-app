@@ -1,101 +1,100 @@
-import React, { useState } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-import { fade, makeStyles } from "@material-ui/core/styles";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import FormDialog from "../DialogBox";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Drawer from "@material-ui/core/Drawer";
-import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
-import { withRouter } from "react-router";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import VideoCallIcon from "@material-ui/icons/VideoCall";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import queryString from "query-string";
-import { postData } from "../../../axios/apiCalls.js";
-import { urls } from "../../../config/urls.js";
-import Notification from "../notifications";
-import { useTimedState } from "../../../utils/utils.js";
+import React, { useState } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import InputBase from '@material-ui/core/InputBase';
+import { fade, makeStyles } from '@material-ui/core/styles';
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
+import FormDialog from '../DialogBox';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
+import List from '@material-ui/core/List';
+import { withRouter } from 'react-router';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import VideoCallIcon from '@material-ui/icons/VideoCall';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import queryString from 'query-string';
+import { postData } from '../../../axios/apiCalls.js';
+import { urls } from '../../../config/urls.js';
+import Notification from '../notifications';
+import { useTimedState } from '../../../utils/utils.js';
 
 const defaultNotification = {
-  msg: "",
+  msg: '',
   show: false,
-  type: "e",
+  type: 'e'
 };
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
-
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
   title: {
     flexGrow: 1,
-fontFamily: 'Montserrat',
-    display: "none",
+    fontFamily: 'Montserrat',
+    display: 'none',
     fontSize: '36px',
     fontWeight: 400,
-    [theme.breakpoints.up("sm")]: {
-      display: "block"
-    },
+    [theme.breakpoints.up('sm')]: {
+      display: 'block'
+    }
   },
   search: {
-    position: "relative",
+    position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25)
     },
     marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(1),
-      width: "auto",
-    },
+      width: 'auto'
+    }
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   inputRoot: {
-    color: "#fff",
+    color: '#fff'
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "20vw",
-      "&:focus": {
-        width: "30vw",
-      },
-    },
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '20vw',
+      '&:focus': {
+        width: '30vw'
+      }
+    }
   },
   drawerPaper: {
-    background:'rgba( 255, 255, 255, 0.4 )',
-            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
-            backdropFilter: 'blur( 3.3px )',
-            padding: '10px',
-            borderRadius: '10px',
-            color: '#fff'
+    background: 'rgba( 255, 255, 255, 0.4 )',
+    boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+    backdropFilter: 'blur( 3.3px )',
+    padding: '10px',
+    borderRadius: '10px',
+    color: '#fff'
   }
 }));
 
@@ -113,9 +112,9 @@ const GroupListNav = (props) => {
     5000
   );
 
-  const [groupname, setGroupname] = useState("");
+  const [groupname, setGroupname] = useState('');
 
-  const [memberName, setMemberName] = useState("");
+  const [memberName, setMemberName] = useState('');
 
   const goVideoCall = () => {
     const query = queryString.parse(props.location.search);
@@ -135,17 +134,17 @@ const GroupListNav = (props) => {
     e.preventDefault();
     const data = {
       id: query.id,
-      name: groupname,
+      name: groupname
     };
     const result = await postData(urls.rooms.addNewRoom, data);
     if (result.status === 200) {
       setOpenCreateGroup(false);
-      setGroupname("");
+      setGroupname('');
       props.getRoomsList(query.id);
       setNotification({
-        msg: "Group Created Successfully",
+        msg: 'Group Created Successfully',
         show: true,
-        type: "s",
+        type: 's'
       });
     }
   };
@@ -155,16 +154,16 @@ const GroupListNav = (props) => {
     e.preventDefault();
     const data = {
       group: query.room,
-      username: memberName,
+      username: memberName
     };
     const result = await postData(urls.rooms.addNewUser, data);
     if (result.status === 200) {
       setOpenAddMember(false);
-      setMemberName("");
+      setMemberName('');
       setNotification({
-        msg: "Group member successfully added!",
+        msg: 'Group member successfully added!',
         show: true,
-        type: "s",
+        type: 's'
       });
     }
   };
@@ -174,34 +173,34 @@ const GroupListNav = (props) => {
   };
 
   const createGroupData = {
-    title: "Create New Group",
-    msg: "Enter Group Name to create a group",
-    label: "group name",
-    proceedText: "Create",
+    title: 'Create New Group',
+    msg: 'Enter Group Name to create a group',
+    label: 'group name',
+    proceedText: 'Create'
   };
 
   const addMemberData = {
-    title: "Add New Member",
-    msg: "Enter user name to add a user to the group",
-    label: "user name",
-    proceedText: "Add",
+    title: 'Add New Member',
+    msg: 'Enter user name to add a user to the group',
+    label: 'user name',
+    proceedText: 'Add'
   };
 
   return (
     <>
       <div className={classes.root}>
-        <AppBar position="static" style={{background: 'transparent', boxShadow: 'none'}}>
+        <AppBar
+          position='static'
+          style={{ background: 'transparent', boxShadow: 'none' }}>
           <Toolbar>
             <IconButton
-              edge="start"
+              edge='start'
               className={classes.menuButton}
-
-              aria-label="open drawer"
-              onClick={toggleClose}
-            >
+              aria-label='open drawer'
+              onClick={toggleClose}>
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" noWrap>
+            <Typography className={classes.title} variant='h6' noWrap>
               Social Media Demo + Video Chat
             </Typography>
             <div className={classes.search}>
@@ -209,25 +208,24 @@ const GroupListNav = (props) => {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Search…"
+                placeholder='Search…'
                 classes={{
                   root: classes.inputRoot,
-                  input: classes.inputInput,
+                  input: classes.inputInput
                 }}
-                inputProps={{ "aria-label": "search" }}
+                inputProps={{ 'aria-label': 'search' }}
               />
             </div>
           </Toolbar>
         </AppBar>
         <Drawer
           // className={classes.drawer}
-          variant="persistent"
-          anchor="left"
+          variant='persistent'
+          anchor='left'
           open={open}
           classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
+            paper: classes.drawerPaper
+          }}>
           <div
           // className={classes.drawerHeader}
           >
@@ -237,36 +235,32 @@ const GroupListNav = (props) => {
           </div>
           <Divider />
           <List>
-          { props.location.pathname === "/chats"
-           &&
-            <ListItem button key={1} onClick={() => setOpenCreateGroup(true)}>
-              <ListItemIcon>
-                <AddCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Create New Group"} />
-            </ListItem>
-          }
+            {props.location.pathname === '/chats' && (
+              <ListItem button key={1} onClick={() => setOpenCreateGroup(true)}>
+                <ListItemIcon>
+                  <AddCircleIcon />
+                </ListItemIcon>
+                <ListItemText primary={'Create New Group'} />
+              </ListItem>
+            )}
 
-          { props.location.pathname !== "/videocall"
-           &&
-            <ListItem button key={2} onClick={goVideoCall}>
-              <ListItemIcon>
-                <VideoCallIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Video Call"} />
-            </ListItem>
-          }
+            {props.location.pathname !== '/videocall' && (
+              <ListItem button key={2} onClick={goVideoCall}>
+                <ListItemIcon>
+                  <VideoCallIcon />
+                </ListItemIcon>
+                <ListItemText primary={'Video Call'} />
+              </ListItem>
+            )}
 
-            { props.location.pathname === "/chat" &&
-            <ListItem button key={3} onClick={() => setOpenAddMember(true)}>
-              <ListItemIcon>
-                <PersonAddIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Add New Member"} />
-            </ListItem>
-            }
-
-
+            {props.location.pathname === '/chat' && (
+              <ListItem button key={3} onClick={() => setOpenAddMember(true)}>
+                <ListItemIcon>
+                  <PersonAddIcon />
+                </ListItemIcon>
+                <ListItemText primary={'Add New Member'} />
+              </ListItem>
+            )}
           </List>
           <Divider />
           <List>
@@ -274,7 +268,7 @@ const GroupListNav = (props) => {
               <ListItemIcon>
                 <ExitToAppIcon />
               </ListItemIcon>
-              <ListItemText primary={"Logout"} />
+              <ListItemText primary={'Logout'} />
             </ListItem>
           </List>
         </Drawer>
@@ -299,7 +293,6 @@ const GroupListNav = (props) => {
         type={notification.type}
         show={notification.show}
         msg={notification.msg}
-
       />
     </>
   );

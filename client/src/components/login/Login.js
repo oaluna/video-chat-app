@@ -138,27 +138,46 @@ const Login = (props) => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          marginTop: '20vh'
+          marginTop: '5vh'
         }}>
         <h1
           style={{
             zIndex: 1,
             marginTop: '0vh',
             mixBlendMode: 'color-burn',
+            fontSize: '48px',
             color: '#0a2540'
           }}>
           Social Media Demo + Video Chat
         </h1>
+        <label htmlFor="img" style={{
+          position: 'absolute',
+          fontSize: '48px',
+          fontWeight: 700,
+          width: '35vw',
+          marginTop: '20vh',
+          marginLeft: '-35vw',
+          textAlign: 'left'
+        }}>Share a chatroom or a conference call just by hitting 'Share'.</label>
+        <img src="images/vector-creator-4.png" alt="User checking her messages" style={{
+          position: 'absolute',
+          zIndex: -1,
+          top: '-15vh',
+          left: '0vw',
+          filter: 'brightness(0.4)',
+          transform: 'scale(0.8, 0.8) rotateY(180deg)'}}/>
         <div
           style={{
+            marginLeft: '45vw',
             textAlign: 'center',
-            width: '40vw',
+            width: '33vw',
+            marginTop: '10vh',
             background: 'rgba( 255, 255, 255, 0.4 )',
             boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
             backdropFilter: 'blur( 3.3px )',
             borderRadius: '10px'
           }}>
-          <h2>Members Login</h2>
+          <h2 style={{fontWeight: 400}}>Members Login</h2>
           <Box m={1}>
             {loginFormArray.map((element) => {
               return (

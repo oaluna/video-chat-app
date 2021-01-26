@@ -11,6 +11,7 @@ const theme = createMuiTheme({
     backdropFilter: 'blur( 3.3px )',
     borderRadius: '15px'
   },
+
   breakpoints: {
     values: {
       xs: 0,
@@ -44,12 +45,8 @@ const theme = createMuiTheme({
       backdropFilter: 'blur( 3.3px )',
       borderRadius: '10px'
     },
-    MuiInput: {
-      color: '#fff'
-    },
-    MuiListItem: {
-      width: '60vw'
-    }
+   
+
   }
 });
 

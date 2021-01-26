@@ -1,12 +1,26 @@
-import React from "react";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import React from 'react';
+import './loader.css';
 
 const Loader = () => {
   return (
-    <Backdrop open={true}>
-      <CircularProgress color="inherit" />
-    </Backdrop>
+    <div className="loader" style={{ marginTop: '-50vh', marginLeft: '40vw'}}>
+    <div className='loadingio-spinner-interwind-rj4f1pane5'>
+      <div className='ldio-5p0ysbevolp'>
+        <div>
+          <div>
+            <div>
+              <div></div>
+            </div>
+          </div>
+          <div>
+            <div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
   );
 };
 
