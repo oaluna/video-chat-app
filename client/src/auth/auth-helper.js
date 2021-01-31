@@ -26,4 +26,4 @@ const auth = {
   }
 }
 
-export default auth
+export default auth;

@@ -6,7 +6,7 @@ import { hot } from 'react-hot-loader'
 import MainRouter from './MainRouter'
 //import Chat from "./components/Chats/Chat";
 
-//import Background from './components/common/background/Background'
+import Background from './components/common/background/Background'
 
 function App() {
   useEffect(() => {
@@ -17,7 +17,7 @@ function App() {
   }, [])
   return (
     <div>
-    {/* <Background /> */}
+     <Background /> 
       <BrowserRouter>
         <ThemeProvider theme={theme}>
 <MainRouter />

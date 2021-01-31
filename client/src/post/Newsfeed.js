@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
-import auth from './../auth/auth-helper'
+import auth from '../auth/auth-helper'
 import PostList from './PostList'
 import { listNewsFeed } from './api-post.js'
 import NewPost from './NewPost'
@@ -36,7 +36,7 @@ export default function Newsfeed() {
 
     listNewsFeed(
       {
-        userId: jwt.user._id
+        userId: jwt.users.id
       },
       {
         t: jwt.token

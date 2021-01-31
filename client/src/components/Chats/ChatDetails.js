@@ -5,6 +5,7 @@ import theme from '../../theme';
 import { ENDPOINT } from '../../config/config.js';
 import { getData, postData } from '../../axios/apiCalls.js';
 import { urls } from '../../config/urls.js';
+import { makeStyles } from '@material-ui/core/styles';
 
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import { Container, Grid } from '@material-ui/core';
@@ -15,7 +16,51 @@ import GroupListNav from '../common/NavBar/GroupListNav';
 
 let socket;
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    background: 'rgba( 255, 255, 255, 0.31 )',
+    boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+    backdropFilter: 'blur( 3.3px )',
+    borderRadius: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    maxHeight: '60vh',
+    width: '80vw',
+    marginLeft: '5vw',
+    overflowY: 'scroll'
+  },
+  formForm: {
+    height: '15vh', marginLeft: '5vw', width: '60vw'
+  },
+  formInput: {
+    position: 'relative',
+    maxWidth: '50vw',
+    color: '#fff'
+  },
+  formButton: {
+    background: theme.palette.primary.light,
+    color: theme.palette.primary.contrastText,
+    position: 'relative',
+    height: '100%',
+    width: '100%',
+    marginTop: '5px',
+    marginLeft: '-5vw',
+    alignItems: 'center',
+    borderRadius: '50px',
+    border: '0px'
+  },
+  backgroundImg: {
+    position: 'absolute',
+            zIndex: -1,
+            top: '-10vh',
+            left: '20vw',
+            filter: 'brightness(0.65)',
+            transform: 'scale(0.7,0.7) rotateY(180deg)'
+  }
+}));
+
 const ChatDetails = (props) => {
+  const classes = useStyles();
   const initalMessageInput = {
     message: {
       elementType: 'input',
@@ -29,7 +74,8 @@ const ChatDetails = (props) => {
         required: true
       },
       valid: false
-    }
+    },
+
   };
 
   //State
@@ -154,28 +200,17 @@ const ChatDetails = (props) => {
     <>
       <GroupListNav />
       <Container>
-        <Container
-          maxWidth={'lg'}
-          style={{
-            background: 'rgba( 255, 255, 255, 0.31 )',
-            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
-            backdropFilter: 'blur( 3.3px )',
-            borderRadius: '10px',
-            display: 'flex',
-            flexDirection: 'column',
-            maxHeight: '40vh',
-            width: '70vw',
-            marginLeft: '20vw',
-            overflowY: 'scroll'
-          }}>
+        <Container maxWidth={'lg'} className={classes.container}>
           <MessageBox messages={messages} user={userData} />
           <div ref={messagesEndRef} />
         </Container>
-        <form onSubmit={(e) => messageSent(e)} style={{ height: '15vh', marginLeft: '20vw' }}>
+        <form
+          onSubmit={(e) => messageSent(e)}
+         className={classes.formForm}>
           <Grid container>
             <Grid item md={10}>
               <InputField
-                style={{ position:'relative', minWidth: '60vw', color: '#fff' }}
+                className={classes.formInput}
                 key={Object.keys(messageInput)[0]}
                 elementConfig={messageInput.message.elementConfig}
                 value={messageInput.message.value}
@@ -185,19 +220,7 @@ const ChatDetails = (props) => {
             </Grid>
             <Grid item sm>
               <button
-                style={{
-                  background: theme.palette.primary.light,
-                  color: theme.palette.primary.contrastText,
-                  position: 'relative',
-                  height: '100%',
-                  width: '100%',
-                  width: '100%',
-                  marginTop: '5px',
-                  marginLeft: '0vw',
-                  alignItems: 'center',
-                  borderRadius: '50px',
-                  border: '0px'
-                }}
+                className={classes.formButton}
                 type='submit'
                 disabled={!messageInput.message.valid}>
                 <SendOutlinedIcon />
@@ -205,14 +228,11 @@ const ChatDetails = (props) => {
             </Grid>
           </Grid>
         </form>
-<img src="images/vector-creator.png" alt="chatting all over the world" style={{
-  position: 'absolute',
-   zIndex: -1,
-   top: '-10vh',
-   left: '20vw',
-   filter: 'brightness(0.65)',
-   transform: 'scale(0.7,0.7) rotateY(180deg)'
-}}/>
+        <img
+          src='images/vector-creator.png'
+          alt='chatting all over the world'
+          className={classes.backgroundImg}
+        />
       </Container>
     </>
   );

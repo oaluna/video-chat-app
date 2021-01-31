@@ -54,8 +54,8 @@ export default function Profile({ match }) {
       abortController.abort()
     }
 
-  }, [match.params.userId])
-  
+  }, [match.params.id])
+
     if (redirectToSignin) {
       return <Redirect to='/signin'/>
     }

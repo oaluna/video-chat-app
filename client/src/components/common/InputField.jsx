@@ -47,9 +47,6 @@ const InputField = (props) => {
             marginTop: '15px',
             padding: 0,
             width: '30vw',
-            backgroundColor: 'rgba( 255, 255, 255, 0.31 )',
-            boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
-            backdropFilter: 'blur( 3.3px )',
             border: '0px'
                    }}
         />

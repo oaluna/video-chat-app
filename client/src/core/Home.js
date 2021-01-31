@@ -12,6 +12,8 @@ import theme from '../theme';
 import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
 
+import Newsfeed from '../post/Newsfeed'
+
 const useStyles = makeStyles((theme) => ({
   card: {
     position: 'absolute',

@@ -20,7 +20,7 @@ const StyledBackground = styled.div`
  background-image: url(images/download.png);
  background-size: cover;
  background-position: center;
-
+filter: brightness(0.75);
  filter: url("#turbulence");
 `
 
